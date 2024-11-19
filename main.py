@@ -11,7 +11,10 @@ if __name__ == "__main__":
     app.title("FinanceTBD")
     app.geometry("1200x700")
 
+    app.grid_columnconfigure(0, weight=1)
+    app.grid_rowconfigure(0, weight=1)
+
     Sidebar = SideBarFrame(app, "Statistics", "Settings", "TBD", "TBD2", "TBD3")
-    Sidebar.grid()
+    Sidebar.grid(row=0, column=0, sticky="nsw")
 
     app.mainloop()
