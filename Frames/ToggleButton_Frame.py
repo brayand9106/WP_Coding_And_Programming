@@ -8,10 +8,16 @@ visibility of the sidebar frame
 class ToggleButtonFrame(ctk.CTkFrame):
     def __init__(self, master, target_frame):
         super().__init__(master)
-        self.button = ctk.CTkButton(self, text="<", width=25, command=lambda frame=target_frame: onClick(frame))
+        self.target = target_frame
+
+        self.button = ctk.CTkButton(self, text="<", width=25, command=self.onClick)
         self.button.grid(sticky="nw")
 
-        def onClick(target_frame):
-            target_frame.toggle_visibility(target_frame)
+    def onClick(self):
+        self.target.toggle_visibility()
+        if self.button.cget("text") == "<":
+            self.button.configure(text=">")
+        else:
+            self.button.configure(text="<")
 
 
