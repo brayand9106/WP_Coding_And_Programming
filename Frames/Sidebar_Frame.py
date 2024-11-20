@@ -18,6 +18,12 @@ class SideBarFrame(ctk.CTkFrame):
         def onClick(button_name):
             print(button_name + " clicked on!")
 
+        def toggle_visibility(self):
+            if self.winfo_ismapped():  # Check if the frame is visible
+                self.grid_remove()  # Hide the frame
+            else:
+                self.grid()
+
         for i, nav in enumerate(navs):
             self.button = ctk.CTkButton(self, text=str(nav), command=lambda name=nav: onClick(name))
             self.navList.append(self.button)
