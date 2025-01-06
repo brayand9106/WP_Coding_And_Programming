@@ -3,6 +3,7 @@
 
 from PIL import Image
 import os
+import signIn
 
 logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
 logo = Image.open(logo_image_path).resize((200, 100))
@@ -13,9 +14,11 @@ from Frames.Head_Frame import HeadFrame
 from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
 
-if __name__ == "__main__":
-    print("Main Executed")
+users = ["Norman", "Todd", "Howard"]
+passwords = ["1234", "Beagle", "abc"]
 
+if (__name__ == "__main__"):
+    print("Main Executed")
     app = ctk.CTk()
     app.title("FinanceTBD")
     app.geometry("1200x700")
@@ -24,6 +27,10 @@ if __name__ == "__main__":
 
     Head = HeadFrame(app, logo)
     Head.grid(columnspan=2, sticky="ew")
+
+    signIn.signInScreen(app, users, passwords)
+
+    
 
     app.grid_columnconfigure(1, weight=10000)
     app.grid_rowconfigure(1, weight=1)
