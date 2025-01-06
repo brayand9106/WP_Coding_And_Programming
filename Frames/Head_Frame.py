@@ -12,5 +12,7 @@ class HeadFrame(ctk.CTkFrame):
 
         ctk_logo = ImageTk.PhotoImage(img)
 
-        logo = ctk.CTkLabel(self, image=ctk_logo, text="")
+        self.logo = ctk.CTkLabel(self, image=ctk_logo, text="")
+
+        self.logo.grid(sticky="nwe")
 
