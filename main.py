@@ -16,8 +16,10 @@ from Frames.ToggleButton_Frame import ToggleButtonFrame
 if __name__ == "__main__":
     print("Main Executed")
 
+    ctk.set_default_color_theme("green")
+
     app = ctk.CTk()
-    app.title("FinanceTBD")
+    app.title("PyNancial Pro")
     app.geometry("1200x700")
 
     app.grid_columnconfigure(0, weight=1)
