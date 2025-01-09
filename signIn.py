@@ -2,6 +2,11 @@ import customtkinter as ctk
 
 #Determines if 
 def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):    
+####################################
+# Error could result if multiple users enter same user name
+# For future improvement either only allow a username to be create if it is unique
+# Or modify function to continue searching if password does not match username
+####################################
 
 #Takes user input for username and stores in user
     user = userNameBox.get("1.10", "1.end") #The textbox indexing starts from 1 not from 0
@@ -19,15 +24,20 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
               if passwords[i] == password:
                 print("Logged In")
 
-#If passwords match close sign in window and open main window
-                clearFrame(app)
+
                 app.grid_rowconfigure(0, weight=0)
                 app.grid_rowconfigure(1, weight=0)
                 app.grid_rowconfigure(2, weight=0)
                 app.grid_rowconfigure(3, weight=0)
                 app.grid_rowconfigure(4, weight=0)
                 app.grid_rowconfigure(5, weight=0)
+
+#If passwords match close sign in window and open main window
+                clearFrame(app)
                 mainWindow(app)
+
+#Reformat rows
+                
 
 
 
