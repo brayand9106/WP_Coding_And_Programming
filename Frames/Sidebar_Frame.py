@@ -15,6 +15,11 @@ class SideBarFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)  # Ensure buttons fill the width
         self.grid_rowconfigure("all", weight=1)  # Equal weight for rows
 
+        self.configure(
+            border_width=1,
+            border_color="#000000"
+        )
+
         for i, nav in enumerate(navs):
             self.button = ctk.CTkButton(self, text=str(nav), command=lambda name=nav: self.onClick(name))
             self.navList.append(self.button)
