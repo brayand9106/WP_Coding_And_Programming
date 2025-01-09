@@ -24,7 +24,7 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
               if passwords[i] == password:
                 print("Logged In")
 
-
+#Reformat rows
                 app.grid_rowconfigure(0, weight=0)
                 app.grid_rowconfigure(1, weight=0)
                 app.grid_rowconfigure(2, weight=0)
@@ -36,20 +36,28 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
                 clearFrame(app)
                 mainWindow(app)
 
-#Reformat rows
+
                 
 
 
-
+#Clears all widgets from the frame
 def clearFrame(app):
     for widget in app.winfo_children():
        widget.destroy()
 
+#Adds username and password for a new account
 def createAccountPressed(userNameBox, passWordBox, users, passwords):
+
+#Takes user input for username and stores in user
     user = userNameBox.get("1.10", "1.end")
+#Takes user input for password and stores in password
     password = passWordBox.get("1.10", "1.end")
+
+#Add new username and password to temp arrays
     users.append(user)
     passwords.append(password)
+
+#Removes username and password from textboxes
     userNameBox.delete("1.10", "1.end")
     passWordBox.delete("1.10", "1.end")
     
