@@ -29,7 +29,7 @@ def mainWindow(app):
     app.grid_rowconfigure(1, weight=1)
     
 #Creates sidebar using sidebarframe file
-    Sidebar = SideBarFrame(app, "Statistics", "Settings", "TBD", "TBD2", "TBD3")
+    Sidebar = SideBarFrame(app, "Create Report", "Statistics", "Settings", "TBD2", "TBD3")
     Sidebar.grid(row=1, column=0, sticky="nsw")
 
 #Creates open and close button
@@ -37,6 +37,12 @@ def mainWindow(app):
     Togglebutton.grid(row=1, column=1, sticky="nw")
 
     ###############Add main frame here####################
+    app.MainFrame = ctk.CTkFrame(app)
+    app.MainFrame.grid_columnconfigure(0, weight=1)
+    app.MainFrame.grid_rowconfigure(0, weight=1)
+    app.MainFrame.grid(row=1, column=1, sticky="nwse")
+
+    Togglebutton.lift()
     
 
 
