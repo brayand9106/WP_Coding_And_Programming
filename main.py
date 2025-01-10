@@ -1,6 +1,10 @@
 #####NOTE: Make sure to run "python main.py" to run the program using a virtual env#####
 #####NOTE: if program still doesnt work, go to activate file in your venv to add export TCL_LIBRARY="C:\Users\Braya\AppData\Local\Programs\Python\Python313\tcl\tcl8.6" to fix tlc error#####
 
+import customtkinter as ctk
+from Frames.Head_Frame import HeadFrame
+from Frames.Sidebar_Frame import SideBarFrame
+from Frames.ToggleButton_Frame import ToggleButtonFrame
 from PIL import Image
 import os
 import signIn
@@ -16,6 +20,7 @@ def mainWindow(app):
 
     app.grid_columnconfigure(1, weight=10000)
     app.grid_rowconfigure(1, weight=1)
+    
 
     Sidebar = SideBarFrame(app, "Statistics", "Settings", "TBD", "TBD2", "TBD3")
     Sidebar.grid(row=1, column=0, sticky="nsw")
@@ -25,11 +30,6 @@ def mainWindow(app):
 
     ###############Add main frame here####################
     
-
-import customtkinter as ctk
-from Frames.Head_Frame import HeadFrame
-from Frames.Sidebar_Frame import SideBarFrame
-from Frames.ToggleButton_Frame import ToggleButtonFrame
 
 users = ["Norman", "Todd", "Howard"]
 passwords = ["1234", "Beagle", "abc"]
@@ -48,10 +48,6 @@ if (__name__ == "__main__"):
     Head.grid(columnspan=5, sticky="ew")
 
     signIn.signInScreen(app, users, passwords, mainWindow)
-
-    
-
-    
 
 
     app.mainloop()
