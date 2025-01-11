@@ -12,6 +12,8 @@ import customtkinter as ctk
 from Frames.Head_Frame import HeadFrame
 from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
+from Frames.Home_Frame import HomeFrame
+
 
 
 #Prepares logo for future use
@@ -19,7 +21,7 @@ logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
 logo = Image.open(logo_image_path).resize((200, 100))
 
 #Opens main window
-def mainWindow(app):
+def mainWindow(app, user):
 
 #Creates the header using logo
     Head = HeadFrame(app, logo)
@@ -35,11 +37,9 @@ def mainWindow(app):
 #Creates open and close button
     Togglebutton = ToggleButtonFrame(app, Sidebar)
     Togglebutton.grid(row=1, column=1, sticky="nw")
-
+ 
     ###############Add main frame here####################
-    app.MainFrame = ctk.CTkFrame(app)
-    app.MainFrame.grid_columnconfigure(0, weight=1)
-    app.MainFrame.grid_rowconfigure(0, weight=1)
+    app.MainFrame = HomeFrame(app, user)
     app.MainFrame.grid(row=1, column=1, sticky="nwse")
 
     Togglebutton.lift()
