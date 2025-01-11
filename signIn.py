@@ -69,17 +69,13 @@ def signInScreen(app, users, secretWords, mainWindow):
     fontSettings = ("Arial", 24)
 
 #Set up columns
-    app.grid_columnconfigure(0, weight=1)
-    app.grid_columnconfigure(1, weight=1)
-    app.grid_columnconfigure(2, weight=1)
-    app.grid_columnconfigure(3, weight=1)
-    app.grid_columnconfigure(4, weight=1)
+    app.grid_columnconfigure((0,1,2,3,4), weight=1)
 
 #Set up rows
     app.grid_rowconfigure(0, weight=0)
     app.grid_rowconfigure(1, weight=1)
     app.grid_rowconfigure(2, weight=1)
-    app.grid_rowconfigure(3, weight=0)
+    app.grid_rowconfigure(3, weight=1)
     app.grid_rowconfigure(4, weight=1)
     app.grid_rowconfigure(5, weight=1)
 
