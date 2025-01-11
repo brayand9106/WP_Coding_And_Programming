@@ -10,6 +10,7 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
 
 #Takes user input for username and stores in user
     user = userNameBox.get("1.10", "1.end") #The textbox indexing starts from 1 not from 0
+    print(user)
 #Takes user input for password and stores in password
     password = passWordBox.get("1.10", "1.end")
 
@@ -34,7 +35,7 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
 
 #If passwords match close sign in window and open main window
                 clearFrame(app)
-                mainWindow(app)
+                mainWindow(app, user)
 
 
                 
@@ -65,7 +66,7 @@ def createAccountPressed(userNameBox, passWordBox, users, passwords):
 #Runs program
 def signInScreen(app, users, secretWords, mainWindow):
     print("Running")
-    
+    fontSettings = ("Arial", 24)
 
 #Set up columns
     app.grid_columnconfigure(0, weight=1)
@@ -83,19 +84,19 @@ def signInScreen(app, users, secretWords, mainWindow):
     app.grid_rowconfigure(5, weight=1)
 
 #Username box
-    userNameBox = ctk.CTkTextbox(app, width=300, height=75, border_color="black", text_color="black",border_width=5, fg_color= "gray")
+    userNameBox = ctk.CTkTextbox(app, width=300, height=75, border_color="black", text_color="black",border_width=5, fg_color= "gray", font = fontSettings, border_spacing=20)
     userNameBox.insert("0.0", "Username: ")
     userNameBox.grid(column=3, row = 2, sticky = '')
 
 #Password box
-    passWordBox = ctk.CTkTextbox(app, width=300, height=75, border_color="black", text_color="black",border_width=5, fg_color= "gray")
+    passWordBox = ctk.CTkTextbox(app, width=300, height=75, border_color="black", text_color="black",border_width=5, fg_color= "gray", font = fontSettings, border_spacing=20)
     passWordBox.insert("0.0", "Password: ")
     passWordBox.grid(column=3, row = 4, sticky = '')
 
 #Log in button
-    logIn = ctk.CTkButton(app, text="Log In", command=lambda: logInPressed(userNameBox, passWordBox, users, secretWords, app, mainWindow), width=300, height=75, border_color="black", text_color="black",border_width=5)
+    logIn = ctk.CTkButton(app, text="Log In", command=lambda: logInPressed(userNameBox, passWordBox, users, secretWords, app, mainWindow), width=300, height=75, border_color="black", text_color="black",border_width=5, font = fontSettings)
     logIn.grid(column=1, row=2, sticky='')
 
 #Create account button
-    createAccount = ctk.CTkButton(app, text="Create Account", command=lambda: createAccountPressed(userNameBox, passWordBox, users, secretWords), width=300, height=75, border_color="black", text_color="black",border_width=5)
+    createAccount = ctk.CTkButton(app, text="Create Account", command=lambda: createAccountPressed(userNameBox, passWordBox, users, secretWords), width=300, height=75, border_color="black", text_color="black",border_width=5, font = fontSettings)
     createAccount.grid(column=1, row=4, sticky='')
