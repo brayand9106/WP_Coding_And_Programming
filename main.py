@@ -18,6 +18,7 @@ from Frames.ToggleButton_Frame import ToggleButtonFrame
 logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
 logo = Image.open(logo_image_path).resize((200, 100))
 
+
 #Opens main window
 def mainWindow(app):
 
@@ -29,7 +30,7 @@ def mainWindow(app):
     app.grid_rowconfigure(1, weight=1)
     
 #Creates sidebar using sidebarframe file
-    Sidebar = SideBarFrame(app, "Create Report", "Statistics", "Settings", "TBD2", "TBD3")
+    Sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "TBD3")
     Sidebar.grid(row=1, column=0, sticky="nsw")
 
 #Creates open and close button
@@ -61,6 +62,9 @@ if (__name__ == "__main__"):
     app = ctk.CTk()
     app.title("PyNancial Pro")
     app.geometry("1200x700")
+
+    app.transactions = {}
+    app.num_transactions = 0
 
 #Creates sign in screen header
     app.grid_columnconfigure(0, weight=1)
