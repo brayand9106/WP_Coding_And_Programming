@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from Frames.CreateTransaction_Frame import CreateTransactionFrame
 from Frames.ViewTransactions_Frame import ViewTransactionsFrame
+from Frames.Help_Frame import HelpFrame
 '''
 This class creates the Sidebar in order for the user to navigate through the dashboard
 
