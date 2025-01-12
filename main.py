@@ -37,7 +37,7 @@ def mainWindow(app, user):
     app.grid_rowconfigure(1, weight=1)
     
 #Creates sidebar using sidebarframe file
-    Sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "TBD3")
+    Sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "Help")
     Sidebar.grid(row=1, column=0, sticky="nsw")
 
 #Creates open and close button
