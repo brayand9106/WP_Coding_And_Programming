@@ -1,5 +1,6 @@
 import customtkinter as ctk
-
+import pandas as pd
+import openpyxl
 #Determines if 
 def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):    
 ####################################
@@ -36,6 +37,14 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
 #If passwords match close sign in window and open main window
                 clearFrame(app)
                 mainWindow(app, user)
+                fileName = user + ".xlsx"
+                try:
+                    savedData = pd.read_excel(fileName)
+                except FileNotFoundError:
+                    print("No saved data found, creating new save data")
+                    savedData = pd.DataFrame(columns=["Transaction", "Income", "Expenses", "Date"], data = [])
+                    savedData.to_excel(excel_writer = fileName, index=False)
+
 
 
                 
