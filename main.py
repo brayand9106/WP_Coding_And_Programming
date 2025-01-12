@@ -24,6 +24,10 @@ logo = Image.open(logo_image_path).resize((200, 100))
 #Opens main window
 def mainWindow(app, user):
 
+    # Initialize transactions attribute
+    app.transactions = {}
+    app.num_transactions = 0
+
 #Creates the header using logo
     Head = HeadFrame(app, logo)
     Head.grid(columnspan=2, sticky="ew")
@@ -62,9 +66,6 @@ if (__name__ == "__main__"):
     app = ctk.CTk()
     app.title("PyNancial Pro")
     app.geometry("1200x700")
-
-    app.transactions = {}
-    app.num_transactions = 0
 
 #Creates sign in screen header
     app.grid_columnconfigure(0, weight=1)
