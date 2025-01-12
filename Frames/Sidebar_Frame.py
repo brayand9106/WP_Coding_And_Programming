@@ -2,6 +2,7 @@ import customtkinter as ctk
 
 from Frames.CreateTransaction_Frame import CreateTransactionFrame
 from Frames.ViewTransactions_Frame import ViewTransactionsFrame
+from Frames.Help_Frame import HelpFrame
 '''
 This class creates the Sidebar in order for the user to navigate through the dashboard
 
@@ -36,6 +37,15 @@ class SideBarFrame(ctk.CTkFrame):
             self.show_create_transaction(master) #Shows the Create transaction environment
         elif button_name == "View Transactions":
             self.show_view_transactions(master)
+        elif button_name == "Help":
+            self.show_help(master) #Shows the Help environment
+
+
+    def show_help(self, master):
+        for widget in master.MainFrame.winfo_children():
+            widget.destroy()
+        help_frame = HelpFrame(master.MainFrame)
+        help_frame.grid(sticky="nwse")
 
     def show_create_transaction(self, master): #Creates the transaction from mainwindow
         for widget in master.MainFrame.winfo_children():
