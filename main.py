@@ -26,9 +26,11 @@ logo = Image.open(logo_image_path).resize((200, 100))
 def mainWindow(app, user):
 
     # Initialize transactions attribute
-    app.transactions = {}
+    app.transactions = loadTransactions(user)
     app.num_transactions = 0
+    print(app.transactions)
 
+    app.save = saveTransactions(user, app.transactions)
 #Creates the header using logo
     Head = HeadFrame(app, logo)
     Head.grid(columnspan=2, sticky="ew")
@@ -51,7 +53,17 @@ def mainWindow(app, user):
     Togglebutton.lift()
     
 
+def saveTransactions(user, data):
+    print("Exectuing save data")
+    savedData = pd.DataFrame.from_dict(data, orient="index")
+    print(savedData)
+    savedData.to_excel(excel_writer = user + ".xlsx", index=False)
 
+def loadTransactions(user):
+    savedData = pd.read_excel(user + ".xlsx")
+    print(savedData)
+    print("Exectuing save data")
+    return savedData.to_dict(orient="index")
 ######Temp arrays for storing test usernames and passwords
 users = ["TestUser"]
 passwords = ["Password"]

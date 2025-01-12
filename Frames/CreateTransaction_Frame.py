@@ -69,3 +69,4 @@ class CreateTransactionFrame(ctk.CTkFrame):
         self.app.num_transactions += 1
         self.app.transactions[self.app.num_transactions] = Transaction(self.app.num_transactions, report_text, income, expenses, date)
         print(f"Transaction submitted: {report_text}, Income: {income}, Expenses: {expenses}, Date: {date}")
+        self.app.save
