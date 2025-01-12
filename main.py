@@ -20,8 +20,13 @@ from Frames.Home_Frame import HomeFrame
 logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
 logo = Image.open(logo_image_path).resize((200, 100))
 
+
 #Opens main window
 def mainWindow(app, user):
+
+    # Initialize transactions attribute
+    app.transactions = {}
+    app.num_transactions = 0
 
 #Creates the header using logo
     Head = HeadFrame(app, logo)
@@ -31,7 +36,7 @@ def mainWindow(app, user):
     app.grid_rowconfigure(1, weight=1)
     
 #Creates sidebar using sidebarframe file
-    Sidebar = SideBarFrame(app, "New Transaction", "Statistics", "Settings", "Help", "TBD3")
+    Sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "TBD3")
     Sidebar.grid(row=1, column=0, sticky="nsw")
 
 #Creates open and close button
