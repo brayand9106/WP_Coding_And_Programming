@@ -1,6 +1,7 @@
 import customtkinter as ctk
 
 from Frames.CreateReport_Frame import CreateReportFrame
+from Frames.Help_Frame import HelpFrame
 
 '''
 This class creates the Sidebar in order for the user to navigate through the dashboard
@@ -32,8 +33,17 @@ class SideBarFrame(ctk.CTkFrame):
 
     def onClick(self, button_name, master):
         print(f"{button_name} clicked on")
-        if button_name == "Create Report":
+        if button_name == "New Transaction":
             self.show_create_report(master) #Shows the Create Report environment
+
+        if button_name == "Help":
+            self.show_help(master) #Shows the Help environment
+
+    def show_help(self, master):
+        for widget in master.MainFrame.winfo_children():
+            widget.destroy()
+        help_frame = HelpFrame(master.MainFrame)
+        help_frame.grid(sticky="nwse")
 
     def show_create_report(self, master): #Creates the report from mainwindow
         for widget in master.MainFrame.winfo_children():
