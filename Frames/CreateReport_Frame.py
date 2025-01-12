@@ -11,7 +11,7 @@ class CreateReportFrame(ctk.CTkFrame):
 
         self.grid_columnconfigure(0, weight=1)  # Ensure widgets fill the width
         
-        self.label = ctk.CTkLabel(self, text="Enter your report:")
+        self.label = ctk.CTkLabel(self, text="Enter transaction name:")
         self.label.grid(row=0, column=0, padx=10, pady=10)
         
         self.entry = ctk.CTkEntry(self)
