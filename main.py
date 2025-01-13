@@ -32,7 +32,7 @@ def mainWindow(app, user):
     app.num_transactions = 0
     
 #Used to save after every added transaction
-    app.save = lambda : saveTransactions(user, app.transactions, app.num_transactions,)
+    app.save = lambda : saveTransactions(user, app.transactions)
     
 #Creates the header using logo
     Head = HeadFrame(app, logo)

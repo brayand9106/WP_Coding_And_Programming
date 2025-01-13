@@ -30,7 +30,7 @@ def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):
                     savedData = pd.read_excel(fileName)
                 except FileNotFoundError:
                     print("No saved data found, creating new save data")
-                    savedData = pd.DataFrame(columns=["transaction_text", "income", "expenses", "date"], data = [])
+                    savedData = pd.DataFrame(columns=[], data = [])
                     savedData.to_excel(excel_writer = fileName, index=False)
 
 #Reformat rows
