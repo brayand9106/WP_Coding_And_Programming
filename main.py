@@ -30,7 +30,7 @@ def mainWindow(app, user):
     app.num_transactions = 0
 
 #Creates the header using logo
-    Head = HeadFrame(app, logo)
+    Head = HeadFrame(app, logo, go_home)
     Head.grid(columnspan=2, sticky="ew")
 
     app.grid_columnconfigure(1, weight=10000)
@@ -68,9 +68,15 @@ if (__name__ == "__main__"):
     app.title("PyNancial Pro")
     app.geometry("1200x700")
 
+    def go_home():
+        for widget in app.MainFrame.winfo_children():
+            widget.destroy()
+        home_frame = HomeFrame(app.MainFrame, "TestUser")
+        home_frame.grid(sticky="nsew")
+
 #Creates sign in screen header
     app.grid_columnconfigure(0, weight=1)
-    Head = HeadFrame(app, logo)
+    Head = HeadFrame(app, logo, go_home)
     Head.grid(columnspan=5, sticky="ew")
 
 #Calls sign in screen
