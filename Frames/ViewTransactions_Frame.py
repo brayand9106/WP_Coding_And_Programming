@@ -71,16 +71,16 @@ class ViewTransactionsFrame(ctk.CTkFrame):
                 label_id = ctk.CTkLabel(self.scrollable_frame, text=str(transaction_id))
                 label_id.grid(row=row, column=0, padx=5, pady=5, sticky="ew")
 
-                label_report = ctk.CTkLabel(self.scrollable_frame, text=transaction.transaction_text)
+                label_report = ctk.CTkLabel(self.scrollable_frame, text=self.app.transactions[transaction_id][1])
                 label_report.grid(row=row, column=1, padx=5, pady=5, sticky="ew")
 
-                label_income = ctk.CTkLabel(self.scrollable_frame, text=str(transaction.income))
+                label_income = ctk.CTkLabel(self.scrollable_frame, text=str(self.app.transactions[transaction_id][2]))
                 label_income.grid(row=row, column=2, padx=5, pady=5, sticky="ew")
 
-                label_expenses = ctk.CTkLabel(self.scrollable_frame, text=str(transaction.expenses))
+                label_expenses = ctk.CTkLabel(self.scrollable_frame, text=str(self.app.transactions[transaction_id][3]))
                 label_expenses.grid(row=row, column=3, padx=5, pady=5, sticky="ew")
 
-                label_date = ctk.CTkLabel(self.scrollable_frame, text=transaction.date)
+                label_date = ctk.CTkLabel(self.scrollable_frame, text=self.app.transactions[transaction_id][4])
                 label_date.grid(row=row, column=4, padx=5, pady=5, sticky="ew")
 
     def update_transaction(self):
