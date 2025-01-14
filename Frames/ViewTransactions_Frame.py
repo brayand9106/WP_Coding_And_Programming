@@ -58,7 +58,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
     
         for row, (transaction_id, transaction) in enumerate(self.app.transactions.items(), start=1):
             state = ctk.BooleanVar(value = False)
-            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(row),
+            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(self.app.transactions[transaction_id][0]),
                                                    variable = state, onvalue = True, offvalue = False,
                                                    command = lambda row=row, state=state : self.selectTransactions(row, state)
                                                    )
@@ -80,27 +80,36 @@ class ViewTransactionsFrame(ctk.CTkFrame):
     def filter_transactions(self, button_name):
         if button_name == "ID":
             print("Filter by ID")
-            for i in range(len(self.app.transactions)):
-                for j in range(1, (len(self.app.transactions)) - i - 1):
-                    if self.app.transactions[j][0] > self.app.transactions[j+1][0]:
-                        self.app.transactions[j], self.app.transactions[j + 1] = self.app.transactions[j + 1], self.app.transactions[j]
-                        print("Swtiching " + str(self.app.transactions[j]) + " with " + str(self.app.transactions[j + 1]))
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][0]))
+            self.app.transactions = sorted_transactions
             self.app.save()
         elif button_name == "Report":
             print("Filter by Report")
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][1])) 
+            self.app.transactions = sorted_transactions
+            self.app.save()
         elif button_name == "Income":
             print("Filter by Income")
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][2], reverse = True))
+            self.app.transactions = sorted_transactions
+            self.app.save()
         elif button_name == "Expenses":
             print("Filter by Expenses")
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][3], reverse = True))
+            self.app.transactions = sorted_transactions
+            self.app.save()
         elif button_name == "Date":
             print("Filter by Date")
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][4])) 
+            self.app.transactions = sorted_transactions
+            self.app.save()
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
         self.create_table_headers()
         for row, (transaction_id, transaction) in enumerate(self.app.transactions.items(), start=1):
             
             state = ctk.BooleanVar(value = False)
-            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(row),
+            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(self.app.transactions[transaction_id][0]),
                                                    variable = state, onvalue = True, offvalue = False,
                                                    command = lambda row=row, state=state : self.selectTransactions(row, state)
                                                    )
