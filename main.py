@@ -25,10 +25,15 @@ logo = Image.open(logo_image_path).resize((200, 100))
 #Opens main window
 def mainWindow(app, user):
 
-    # Initialize transactions attribute
-    app.transactions = {}
-    app.num_transactions = 0
+    # Initialize transactions attribute to use the transactions saved in excel
+    app.transactions = loadTransactions(user)
+    print(app.transactions)
 
+    app.num_transactions = 0
+    
+#Used to save after every added transaction
+    app.save = lambda : saveTransactions(user, app.transactions)
+    
 #Creates the header using logo
     Head = HeadFrame(app, logo)
     Head.grid(columnspan=2, sticky="ew")
@@ -44,12 +49,33 @@ def mainWindow(app, user):
     Togglebutton = ToggleButtonFrame(app, Sidebar)
     Togglebutton.grid(row=1, column=1, sticky="nw")
  
-    ###############Add main frame here####################
+#Creates the main frame
     app.MainFrame = HomeFrame(app, user)
     app.MainFrame.grid(row=1, column=1, sticky="nwse")
 
     Togglebutton.lift()
     
+#Saves transactions to excel file
+def saveTransactions(user, data):    
+    print("Saving data")
+
+#Takes dictionary and converts it to a dataframe
+    savedData = pd.DataFrame.from_dict(data, orient = 'index')
+    print(savedData)
+
+#Save dataframe to excel file
+    savedData.to_excel(excel_writer = user + ".xlsx")
+
+#Loads transactions from excel file
+def loadTransactions(user):
+
+#Creates a dataframe from excel file
+    savedData = pd.read_excel(user + ".xlsx")
+    print("Loading saved data")
+    print(savedData)
+
+#Converts dataframe to dictionary
+    return savedData.to_dict(orient = 'index')
 
 
 ######Temp arrays for storing test usernames and passwords
