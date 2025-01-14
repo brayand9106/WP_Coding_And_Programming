@@ -1,109 +1,107 @@
 import customtkinter as ctk
 import pandas as pd
-#Determines if 
-def logInPressed(userNameBox, passWordBox, users, passwords, app, mainWindow):    
+
 ####################################
 # Error could result if multiple users enter same user name
 # For future improvement either only allow a username to be create if it is unique
 # Or modify function to continue searching if password does not match username
 ####################################
-
-#Takes user input for username and stores in user
-    user = userNameBox.get("1.10", "1.end") #The textbox indexing starts from 1 not from 0
+def logInPressed(userNameEntry, passWordEntry, users, passwords, app, mainWindow):
+    # Takes user input for username and stores in user
+    user = userNameEntry.get().strip()
     print(user)
-#Takes user input for password and stores in password
-    password = passWordBox.get("1.10", "1.end")
+    # Takes user input for password and stores in password
+    password = passWordEntry.get().strip()
 
     print("Username: " + user + "\nPassword: " + password)
 
-#Sorts through array of all entered usernames to look for a match
-    for i in range(0, len(users)):
-         if users[i] == user:
-              print("User Match")
-
-#Determines if entered password matched the stored password for the entered username
-              if passwords[i] == password:
+    # Sorts through array of all entered usernames to look for a match
+    for i in range(len(users)):
+        if users[i] == user:
+            print("User Match")
+            app.grid_rowconfigure(2, weight=0)
+            app.grid_rowconfigure(3, weight=0)
+            app.grid_rowconfigure(4, weight=0)
+            app.grid_rowconfigure(5, weight=0)
+            app.grid_columnconfigure(2, weight=0)
+            app.grid_columnconfigure(3, weight=0)
+            app.grid_columnconfigure(4, weight=0)
+            for widget in app.winfo_children():
+                    widget.destroy()  # Destroy all widgets in the current window
+            # Determines if entered password matched the stored password for the entered username
+            if passwords[i] == password:
                 print("Logged In")
-
-                fileName = user + ".xlsx"
-                try:
-                    savedData = pd.read_excel(fileName)
-                except FileNotFoundError:
-                    print("No saved data found, creating new save data")
-                    savedData = pd.DataFrame(columns=[], data = [])
-                    savedData.to_excel(excel_writer = fileName, index=False)
-
-#Reformat rows
-                app.grid_rowconfigure(0, weight=0)
-                app.grid_rowconfigure(1, weight=0)
-                app.grid_rowconfigure(2, weight=0)
-                app.grid_rowconfigure(3, weight=0)
-                app.grid_rowconfigure(4, weight=0)
-                app.grid_rowconfigure(5, weight=0)
-
-#If passwords match close sign in window and open main window
-                clearFrame(app)
                 mainWindow(app, user)
-                
-                
+                return
+            else:
+                print("Incorrect Password")
+                return
+    print("User not found")
 
 
-
-                
-
-
-#Clears all widgets from the frame
-def clearFrame(app):
-    for widget in app.winfo_children():
-       widget.destroy()
-
-#Adds username and password for a new account
-def createAccountPressed(userNameBox, passWordBox, users, passwords):
-
-#Takes user input for username and stores in user
-    user = userNameBox.get("1.10", "1.end")
-#Takes user input for password and stores in password
-    password = passWordBox.get("1.10", "1.end")
-
-#Add new username and password to temp arrays
-    users.append(user)
-    passwords.append(password)
-
-#Removes username and password from textboxes
-    userNameBox.delete("1.10", "1.end")
-    passWordBox.delete("1.10", "1.end")
+def createAccountPressed(userNameEntry, passWordEntry, users, passwords):
+    # Add logic to create a new account
+    user = userNameEntry.get().strip()
+    password = passWordEntry.get().strip()
+    if user and password:
+        users.append(user)
+        passwords.append(password)
+        print("Account created for user:", user)
+    else:
+        print("Username and password cannot be empty")
     
+def toggle_password_visibility(passWordEntry, show_password):
+    if show_password.get():
+        passWordEntry.configure(show="")
+    else:
+        passWordEntry.configure(show="*")
 
-#Runs program
 def signInScreen(app, users, secretWords, mainWindow):
-    print("Running")
-    fontSettings = ("Arial", 24)
-
-#Set up columns
-    app.grid_columnconfigure((0,1,2,3,4), weight=1)
-
-#Set up rows
-    app.grid_rowconfigure(0, weight=0)
+    app.grid_rowconfigure(0, weight=1)
     app.grid_rowconfigure(1, weight=1)
     app.grid_rowconfigure(2, weight=1)
     app.grid_rowconfigure(3, weight=1)
     app.grid_rowconfigure(4, weight=1)
     app.grid_rowconfigure(5, weight=1)
+    app.grid_columnconfigure(0, weight=1)
+    app.grid_columnconfigure(1, weight=1)
+    app.grid_columnconfigure(2, weight=1)
+    app.grid_columnconfigure(3, weight=1)
+    app.grid_columnconfigure(4, weight=1)
 
-#Username box
-    userNameBox = ctk.CTkTextbox(app, width=300, height=75, border_color="black", text_color="black",border_width=5, fg_color= "gray", font = fontSettings, border_spacing=20)
-    userNameBox.insert("0.0", "Username: ")
-    userNameBox.grid(column=3, row = 2, sticky = '')
+    # Create a rounded frame
+    frame = ctk.CTkFrame(app, corner_radius=15)
+    frame.grid(row=1, column=1, columnspan=3, rowspan=3, sticky="nsew", padx=0, pady=0)
+    frame.grid_columnconfigure(0, weight=1)
+    frame.grid_columnconfigure(1, weight=1)
+    frame.grid_columnconfigure(2, weight=1)
+    frame.grid_rowconfigure(0, weight=1)
+    frame.grid_rowconfigure(1, weight=1)
+    frame.grid_rowconfigure(2, weight=1)
+    frame.grid_rowconfigure(3, weight=1)
+    frame.grid_rowconfigure(4, weight=1)
 
-#Password box
-    passWordBox = ctk.CTkTextbox(app, width=300, height=75, border_color="black", text_color="black",border_width=5, fg_color= "gray", font = fontSettings, border_spacing=20)
-    passWordBox.insert("0.0", "Password: ")
-    passWordBox.grid(column=3, row = 4, sticky = '')
+    # Welcome label
+    welcome_label = ctk.CTkLabel(frame, text="Welcome! Login or Create an Account", font=("Arial", 24))
+    welcome_label.grid(row=0, column=0, columnspan=3, pady=0)
 
-#Log in button
-    logIn = ctk.CTkButton(app, text="Log In", command=lambda: logInPressed(userNameBox, passWordBox, users, secretWords, app, mainWindow), width=300, height=75, border_color="black", text_color="black",border_width=5, font = fontSettings)
-    logIn.grid(column=1, row=2, sticky='')
+    # Username entry
+    userNameEntry = ctk.CTkEntry(frame, placeholder_text="Username", width=300)
+    userNameEntry.grid(row=1, column=1, pady=0)
 
-#Create account button
-    createAccount = ctk.CTkButton(app, text="Create Account", command=lambda: createAccountPressed(userNameBox, passWordBox, users, secretWords), width=300, height=75, border_color="black", text_color="black",border_width=5, font = fontSettings)
-    createAccount.grid(column=1, row=4, sticky='')
+    # Password entry
+    passWordEntry = ctk.CTkEntry(frame, placeholder_text="Password", show="*", width=300)
+    passWordEntry.grid(row=2, column=1, pady=0)
+
+    # Show password button
+    show_password = ctk.BooleanVar()
+    show_password_button = ctk.CTkCheckBox(frame, text="Show Password", variable=show_password, command=lambda: toggle_password_visibility(passWordEntry, show_password))
+    show_password_button.grid(row=2, column=1, padx=(550, 0), sticky="w")
+
+    # Log in button
+    logInButton = ctk.CTkButton(frame, text="Log In", command=lambda: logInPressed(userNameEntry, passWordEntry, users, secretWords, app, mainWindow), width=300)
+    logInButton.grid(row=3, column=1, pady=0)
+
+    # Create account button
+    createAccountButton = ctk.CTkButton(frame, text="Create Account", command=lambda: createAccountPressed(userNameEntry, passWordEntry, users, secretWords), width=300)
+    createAccountButton.grid(row=4, column=1, pady=0)
