@@ -4,7 +4,7 @@ import customtkinter as ctk
 This frame creates a report creation environment that allows the user
 to input expenses and income to be tracked
 '''
-
+################################################################
 class Transaction():
     def __init__(self, id, transaction_text, income, expenses, date):
         self.id = id
@@ -24,6 +24,8 @@ class Transaction():
     
     def getDate(self):
         return self.date    
+################################################################
+
 
 class CreateTransactionFrame(ctk.CTkFrame):
     def __init__(self, app, master=None, **kwargs):
@@ -67,5 +69,12 @@ class CreateTransactionFrame(ctk.CTkFrame):
         expenses = self.expense_entry.get()
         date = self.date_entry.get()
         self.app.num_transactions += 1
-        self.app.transactions[self.app.num_transactions] = Transaction(self.app.num_transactions, report_text, income, expenses, date)
+
+#Adds transaction to corresponding location in the dictionary
+        self.app.transactions[self.app.num_transactions] = [self.app.num_transactions, report_text, income, expenses, date]
+        print(self.app.transactions)
+
+#Loads save
+        self.app.save()
         print(f"Transaction submitted: {report_text}, Income: {income}, Expenses: {expenses}, Date: {date}")
+        
