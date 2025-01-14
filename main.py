@@ -72,6 +72,7 @@ def saveTransactions(user, data):
 
 #Takes dictionary and converts it to a dataframe
     savedData = pd.DataFrame.from_dict(data, orient = 'index')
+    savedData.set_index(0, inplace= True)
     print(savedData)
 
 #Save dataframe to excel file
@@ -89,12 +90,12 @@ def loadTransactions(user):
     return savedData.to_dict(orient = 'index')
 
 
-######Temp arrays for storing test usernames and passwords
-users = ["TestUser"]
-passwords = ["Password"]
-#########
-
-
+users = pd.read_excel("Users.xlsx")
+print(users)
+users = users.set_index("UserNames")
+print(users)
+users = users.to_dict(orient = "index")
+print(users)
 if (__name__ == "__main__"):
     print("Main Executed")
 
@@ -112,6 +113,6 @@ if (__name__ == "__main__"):
         home_frame.grid(sticky="nsew")
 
 #Calls sign in screen
-    signIn.signInScreen(app, users, passwords, mainWindow)
+    signIn.signInScreen(app, users, mainWindow)
 
     app.mainloop()
