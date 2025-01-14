@@ -29,7 +29,7 @@ def mainWindow(app, user):
     app.transactions = loadTransactions(user)
     print(app.transactions)
 
-    app.num_transactions = 0
+    app.num_transactions = len(app.transactions)
     
 #Used to save after every added transaction
     app.save = lambda : saveTransactions(user, app.transactions)
