@@ -1,6 +1,10 @@
 from PIL import ImageTk
 import customtkinter as ctk
 
+'''
+This class creates the HeadFrame which is the top frame of the dashboard
+'''
+
 class HeadFrame(ctk.CTkFrame):
     def __init__(self, master, img, home_command):
         super().__init__(master)
