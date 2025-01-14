@@ -58,7 +58,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
     
         for row, (transaction_id, transaction) in enumerate(self.app.transactions.items(), start=1):
             state = ctk.BooleanVar(value = False)
-            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(row),
+            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(self.app.transactions[transaction_id][0]),
                                                    variable = state, onvalue = True, offvalue = False,
                                                    command = lambda row=row, state=state : self.selectTransactions(row, state)
                                                    )
@@ -95,12 +95,12 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             self.app.save()
         elif button_name == "Expenses":
             print("Filter by Expenses")
-            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][3],reverse = True))
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][3], reverse = True))
             self.app.transactions = sorted_transactions
             self.app.save()
         elif button_name == "Date":
             print("Filter by Date")
-            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][1])) 
+            sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][4])) 
             self.app.transactions = sorted_transactions
             self.app.save()
         for widget in self.scrollable_frame.winfo_children():
@@ -109,7 +109,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
         for row, (transaction_id, transaction) in enumerate(self.app.transactions.items(), start=1):
             
             state = ctk.BooleanVar(value = False)
-            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(row),
+            selectTransactionBox = ctk.CTkCheckBox(self.scrollable_frame, text= "                          " + str(self.app.transactions[transaction_id][0]),
                                                    variable = state, onvalue = True, offvalue = False,
                                                    command = lambda row=row, state=state : self.selectTransactions(row, state)
                                                    )
