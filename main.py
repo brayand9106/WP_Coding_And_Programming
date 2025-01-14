@@ -33,6 +33,8 @@ def mainWindow(app, user):
     
 #Used to save after every added transaction
     app.save = lambda : saveTransactions(user, app.transactions)
+    app.grid_columnconfigure("all", weight = 1)
+    app.grid_rowconfigure("all",weight = 1)
     
 #Creates the header using logo
     Head = HeadFrame(app, logo, go_home)
@@ -50,8 +52,13 @@ def mainWindow(app, user):
     Togglebutton.grid(row=1, column=1, sticky="nw")
  
 #Creates the main frame
-    app.MainFrame = HomeFrame(app, user)
+    app.MainFrame = ctk.CTkFrame(app)
     app.MainFrame.grid(row=1, column=1, sticky="nwse")
+# Configure MainFrame to expand
+    app.MainFrame.grid_columnconfigure(0, weight=1)
+    app.MainFrame.grid_rowconfigure(0, weight=1)
+    home = HomeFrame(app.MainFrame, user)
+    home.grid(sticky="nsew")
 
     Togglebutton.lift()
     
