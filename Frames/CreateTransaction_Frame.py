@@ -71,7 +71,7 @@ class CreateTransactionFrame(ctk.CTkFrame):
         
 
 #Adds transaction to corresponding location in the dictionary
-        self.app.transactions[self.app.num_transactions] = {0 : self.app.num_transactions, 1 : report_text, 2: str(income), 3 : str(expenses), 4: date}
+        self.app.transactions[self.app.num_transactions + 1] = {0 : self.app.num_transactions + 1, 1 : report_text, 2: int(income), 3 : int(expenses), 4: date}
         print(self.app.transactions)
         self.app.num_transactions = len(self.app.transactions)
 #Loads save
