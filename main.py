@@ -33,19 +33,23 @@ def mainWindow(app, user):
     
 #Used to save after every added transaction
     app.save = lambda : saveTransactions(user, app.transactions)
-    app.grid_columnconfigure("all", weight = 1)
-    app.grid_rowconfigure("all",weight = 1)
+    app.grid_columnconfigure(0, weight=0)
+    app.grid_columnconfigure(1, weight=0)
+    app.grid_rowconfigure(0, weight=0)  # Smaller weight for the header row
+    app.grid_rowconfigure(1, weight=0)  # Larger weight for the main content row
     
 #Creates the header using logo
     Head = HeadFrame(app, logo, go_home)
-    Head.grid(columnspan=2, sticky="ew")
+    Head.grid(row=0, column=0, columnspan=3, sticky="new")
 
     app.grid_columnconfigure(1, weight=10000)
-    app.grid_rowconfigure(1, weight=1)
+    app.grid_rowconfigure(1, weight=0)
     
 #Creates sidebar using sidebarframe file
     Sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "Help")
     Sidebar.grid(row=1, column=0, sticky="nsw")
+    # Configure Sidebar to expand vertically
+    app.grid_rowconfigure(1, weight=1)
 
 #Creates open and close button
     Togglebutton = ToggleButtonFrame(app, Sidebar)
@@ -107,14 +111,7 @@ if (__name__ == "__main__"):
         home_frame = HomeFrame(app.MainFrame, "TestUser")
         home_frame.grid(sticky="nsew")
 
-#Creates sign in screen header
-    app.grid_columnconfigure(0, weight=1)
-    Head = HeadFrame(app, logo, go_home)
-    Head.grid(columnspan=5, sticky="ew")
-
 #Calls sign in screen
     signIn.signInScreen(app, users, passwords, mainWindow)
-
-    
 
     app.mainloop()
