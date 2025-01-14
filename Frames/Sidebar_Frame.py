@@ -4,6 +4,7 @@ from Frames.CreateTransaction_Frame import CreateTransactionFrame
 from Frames.ViewTransactions_Frame import ViewTransactionsFrame
 from Frames.Help_Frame import HelpFrame
 from Frames.Statistics_Frame import StatisticsFrame
+from Frames.Settings_Frame import SettingsFrame
 '''
 This class creates the Sidebar in order for the user to navigate through the dashboard
 
@@ -42,6 +43,8 @@ class SideBarFrame(ctk.CTkFrame):
             self.show_help(master) #Shows the Help environment
         elif button_name == "Statistics":
             self.show_statistics(master) #Shows the Statistics environment
+        elif button_name == "Settings":
+            self.show_settings(master) #Shows the Settings environment
         
 
 
@@ -62,6 +65,12 @@ class SideBarFrame(ctk.CTkFrame):
             widget.destroy()
         view_transactions_frame = ViewTransactionsFrame(master, master.MainFrame)
         view_transactions_frame.grid(sticky="nwse")
+
+    def show_settings(self, master):
+        for widget in master.MainFrame.winfo_children():
+            widget.destroy()
+        settings_frame = SettingsFrame(master, master.MainFrame)
+        settings_frame.grid(sticky="nwse")
 
     def show_statistics(self, master):
         for widget in master.MainFrame.winfo_children():
