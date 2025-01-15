@@ -34,25 +34,25 @@ class CreateTransactionFrame(ctk.CTkFrame):
 
         self.grid_columnconfigure(0, weight=1)  # Ensure widgets fill the width
         
-        self.label = ctk.CTkLabel(self, text="Enter your transaction:")
+        self.label = ctk.CTkLabel(self, text="Enter your Transaction Name:")
         self.label.grid(row=0, column=0, padx=10, pady=10)
         
         self.entry = ctk.CTkEntry(self)
         self.entry.grid(row=1, column=0, padx=10, pady=10)
 
-        self.income_label = ctk.CTkLabel(self, text="Enter income:")
+        self.income_label = ctk.CTkLabel(self, text="Enter Income:")
         self.income_label.grid(row=2, column=0, padx=10, pady=10)
         
         self.income_entry = ctk.CTkEntry(self)
         self.income_entry.grid(row=3, column=0, padx=10, pady=10)
         
-        self.expense_label = ctk.CTkLabel(self, text="Enter expenses:")
+        self.expense_label = ctk.CTkLabel(self, text="Enter Expenses:")
         self.expense_label.grid(row=4, column=0, padx=10, pady=10)
         
         self.expense_entry = ctk.CTkEntry(self)
         self.expense_entry.grid(row=5, column=0, padx=10, pady=10)
         
-        self.date_label = ctk.CTkLabel(self, text="Enter date of transaction:")
+        self.date_label = ctk.CTkLabel(self, text="Enter Date of Transaction (mm/dd/yyyy):")
         self.date_label.grid(row=6, column=0, padx=10, pady=10)
         
         self.date_entry = ctk.CTkEntry(self)
