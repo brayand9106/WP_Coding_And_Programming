@@ -25,10 +25,11 @@ def logInPressed(userNameEntry, passWordEntry, users, app, mainWindow):
         app.grid_columnconfigure(2, weight=0)
         app.grid_columnconfigure(3, weight=0)
         app.grid_columnconfigure(4, weight=0)
-        for widget in app.winfo_children():
-            widget.destroy()  # Destroy all widgets in the current window
+    # Destroy all widgets in the current window
             # Determines if entered password matched the stored password for the entered username
         if users[user]["Passwords"] == password:
+            for widget in app.winfo_children():# Destroy all widgets in the current window
+                widget.destroy()
             print("Logged In")
             mainWindow(app, user)
             return
