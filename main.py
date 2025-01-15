@@ -72,7 +72,6 @@ def saveTransactions(user, data):
 
 #Takes dictionary and converts it to a dataframe
     savedData = pd.DataFrame.from_dict(data, orient = 'index')
-    savedData.set_index(0, inplace= True)
     print(savedData)
 
 #Save dataframe to excel file
