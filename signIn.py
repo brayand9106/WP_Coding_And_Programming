@@ -6,7 +6,7 @@ import pandas as pd
 # For future improvement either only allow a username to be create if it is unique
 # Or modify function to continue searching if password does not match username
 ####################################
-def logInPressed(userNameEntry, passWordEntry, users, passwords, app, mainWindow):
+def logInPressed(userNameEntry, passWordEntry, users, app, mainWindow):
     # Takes user input for username and stores in user
     user = userNameEntry.get().strip()
     print(user)
@@ -16,37 +16,46 @@ def logInPressed(userNameEntry, passWordEntry, users, passwords, app, mainWindow
     print("Username: " + user + "\nPassword: " + password)
 
     # Sorts through array of all entered usernames to look for a match
-    for i in range(len(users)):
-        if users[i] == user:
-            print("User Match")
-            app.grid_rowconfigure(2, weight=0)
-            app.grid_rowconfigure(3, weight=0)
-            app.grid_rowconfigure(4, weight=0)
-            app.grid_rowconfigure(5, weight=0)
-            app.grid_columnconfigure(2, weight=0)
-            app.grid_columnconfigure(3, weight=0)
-            app.grid_columnconfigure(4, weight=0)
-            # Destroy all widgets in the current window
+    if user in users:
+        print("User Match")
+        app.grid_rowconfigure(2, weight=0)
+        app.grid_rowconfigure(3, weight=0)
+        app.grid_rowconfigure(4, weight=0)
+        app.grid_rowconfigure(5, weight=0)
+        app.grid_columnconfigure(2, weight=0)
+        app.grid_columnconfigure(3, weight=0)
+        app.grid_columnconfigure(4, weight=0)
+        for widget in app.winfo_children():
+            widget.destroy()  # Destroy all widgets in the current window
             # Determines if entered password matched the stored password for the entered username
-            if passwords[i] == password:
-                for widget in app.winfo_children():
-                    widget.destroy()
-                print("Logged In")
-                mainWindow(app, user)
-                return
-            else:
-                print("Incorrect Password")
+        if users[user]["Passwords"] == password:
+            for widget in app.winfo_children():
+                widget.destroy()
+            print("Logged In")
+            mainWindow(app, user)
+            return
+        else:
+            print("Incorrect Password")
+            return
     print("User not found")
 
 
-def createAccountPressed(userNameEntry, passWordEntry, users, passwords):
+def createAccountPressed(userNameEntry, passWordEntry, users):
     # Add logic to create a new account
     user = userNameEntry.get().strip()
     password = passWordEntry.get().strip()
     if user and password:
-        users.append(user)
-        passwords.append(password)
+        users[user] = {"Passwords" : password}
+        print(users)
         print("Account created for user:", user)
+        users = pd.DataFrame.from_dict(users ,orient = "index")
+        users.reset_index(inplace=True)
+        users.rename(columns={"index": "UserNames"}, inplace=True)
+        users.set_index("UserNames", inplace=True)
+        print(users)
+        users.to_excel(excel_writer="Users.xlsx")
+        savedData = pd.DataFrame()
+        savedData.to_excel(excel_writer = user + ".xlsx")
     else:
         print("Username and password cannot be empty")
     
@@ -56,7 +65,7 @@ def toggle_password_visibility(passWordEntry, show_password):
     else:
         passWordEntry.configure(show="*")
 
-def signInScreen(app, users, secretWords, mainWindow):
+def signInScreen(app, users, mainWindow):
     app.grid_rowconfigure(0, weight=1)
     app.grid_rowconfigure(1, weight=1)
     app.grid_rowconfigure(2, weight=1)
@@ -99,9 +108,9 @@ def signInScreen(app, users, secretWords, mainWindow):
     show_password_button.grid(row=2, column=1, padx=(550, 0), sticky="w")
 
     # Log in button
-    logInButton = ctk.CTkButton(frame, text="Log In", command=lambda: logInPressed(userNameEntry, passWordEntry, users, secretWords, app, mainWindow), width=300)
+    logInButton = ctk.CTkButton(frame, text="Log In", command=lambda: logInPressed(userNameEntry, passWordEntry, users, app, mainWindow), width=300)
     logInButton.grid(row=3, column=1, pady=0)
 
     # Create account button
-    createAccountButton = ctk.CTkButton(frame, text="Create Account", command=lambda: createAccountPressed(userNameEntry, passWordEntry, users, secretWords), width=300)
+    createAccountButton = ctk.CTkButton(frame, text="Create Account", command=lambda: createAccountPressed(userNameEntry, passWordEntry, users), width=300)
     createAccountButton.grid(row=4, column=1, pady=0)
