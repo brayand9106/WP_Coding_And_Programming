@@ -15,7 +15,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)  # Ensure widgets fill the width
         self.grid_rowconfigure(1, weight=1)  # Ensure the listbox expands
 
-        self.label = ctk.CTkLabel(self, text="View Transactions")
+        self.label = ctk.CTkLabel(self, text="View Transactions", font=("Arial", 34))
         self.label.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
         self.filter_entry = ctk.CTkEntry(self, placeholder_text="Search transactions")
