@@ -107,8 +107,14 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             search_term = self.filter_entry.get()
             print(f"Filter by Search: {search_term}")
             filtered_transactions = {k: v for k, v in self.app.transactions.items() if search_term.lower() in v[1].lower()}
-            self.app.transactions = filtered_transactions
-            self.app.save()
+            if filtered_transactions:
+            # Move the first matched item to the beginning of the dictionary
+                first_key = next(iter(filtered_transactions))
+                new_transactions = {first_key: self.app.transactions[first_key]}
+                new_transactions.update({k: v for k, v in self.app.transactions.items() if k != first_key})
+                self.app.transactions = new_transactions
+                self.app.save()
+    
             for widget in self.scrollable_frame.winfo_children():
                 widget.destroy()
         self.create_table_headers()
