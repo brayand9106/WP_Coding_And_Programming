@@ -18,16 +18,16 @@ class ViewTransactionsFrame(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="View Transactions", font=("Arial", 34))
         self.label.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
-        self.filter_entry = ctk.CTkEntry(self, placeholder_text="Filter transactions")
+        self.filter_entry = ctk.CTkEntry(self, placeholder_text="Search transactions")
         self.filter_entry.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
 
-        self.filter_button = ctk.CTkButton(self, text="Filter", command=self.filter_transactions)
+        self.filter_button = ctk.CTkButton(self, text="Search", command= lambda text = "Search" : self.filter_transactions(text))
         self.filter_button.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self)
         self.scrollable_frame.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
 
-        self.update_button = ctk.CTkButton(self, text="Update", command=self.update_transaction)
+        self.update_button = ctk.CTkButton(self, text="Refresh", command=self.load_transactions)
         self.update_button.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
 
         self.delete_button = ctk.CTkButton(self, text="Delete", command=self.delete_transaction)
@@ -103,8 +103,20 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             sorted_transactions = dict(sorted(self.app.transactions.items(), key=lambda item: item[1][4])) 
             self.app.transactions = sorted_transactions
             self.app.save()
-        for widget in self.scrollable_frame.winfo_children():
-            widget.destroy()
+        elif button_name == "Search":
+            search_term = self.filter_entry.get()
+            print(f"Filter by Search: {search_term}")
+            filtered_transactions = {k: v for k, v in self.app.transactions.items() if search_term.lower() in v[1].lower()}
+            if filtered_transactions:
+            # Move the first matched item to the beginning of the dictionary
+                first_key = next(iter(filtered_transactions))
+                new_transactions = {first_key: self.app.transactions[first_key]}
+                new_transactions.update({k: v for k, v in self.app.transactions.items() if k != first_key})
+                self.app.transactions = new_transactions
+                self.app.save()
+    
+            for widget in self.scrollable_frame.winfo_children():
+                widget.destroy()
         self.create_table_headers()
         for row, (transaction_id, transaction) in enumerate(self.app.transactions.items(), start=1):
             
