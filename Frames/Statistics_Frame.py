@@ -28,7 +28,7 @@ class StatisticsFrame(ctk.CTkFrame):
         self.label_graph_type.grid(row=2, column=0, padx=10, pady=10)
 
         self.graph_type_var = ctk.StringVar(value="Income/Expenses")
-        self.graph_type_menu = ctk.CTkOptionMenu(self, variable=self.graph_type_var, values=["Income/Expenses", "Net Earnings"])
+        self.graph_type_menu = ctk.CTkOptionMenu(self, variable=self.graph_type_var, values=["Income/Expenses", "Net Earnings", "Cumulative Earnings"])
         self.graph_type_menu.grid(row=3, column=0, padx=10, pady=10)
 
         self.generate_button = ctk.CTkButton(self, text="Generate Graph", command=self.generate_graph)
@@ -81,6 +81,18 @@ class StatisticsFrame(ctk.CTkFrame):
             fig, ax = plt.subplots(figsize=(10, 6))
             sns.lineplot(data=df, x="Date", y="Net Earnings", ax=ax, label="Net Earnings")
             ax.set_title("Net Earnings Over Time")
+        elif graph_type == "Cumulative Earnings":
+            cumulative_earnings = 0
+            df = pd.DataFrame([{
+                "Transaction": t[1],
+                "Cumulative Earnings": (cumulative_earnings := cumulative_earnings + (float(t[2]) - float(t[3]))),
+                "Date": datetime.strptime(t[4], "%m/%d/%Y")
+            } for t in filtered_transactions])
+
+            fig, ax = plt.subplots(figsize=(10, 6))
+            sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings")
+            ax.set_title("Cumulative Earnings Over Time")
+
 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
         fig.tight_layout(pad=3.0)
