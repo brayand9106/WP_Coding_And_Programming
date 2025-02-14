@@ -19,6 +19,7 @@ from Frames.Home_Frame import HomeFrame
 
 #Prepares logo for future use
 logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
+print(logo_image_path)
 logo = Image.open(logo_image_path).resize((200, 100))
 
 
