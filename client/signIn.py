@@ -1,3 +1,4 @@
+from CTkMessagebox import CTkMessagebox
 import customtkinter as ctk
 import pandas as pd
 
@@ -6,7 +7,7 @@ import pandas as pd
 # For future improvement either only allow a username to be create if it is unique
 # Or modify function to continue searching if password does not match username
 ####################################
-def logInPressed(userNameEntry, passWordEntry, users, app, mainWindow):
+def logInPressed(userNameEntry, passWordEntry, users, app, mainWindow, error_label):
     # Takes user input for username and stores in user
     user = userNameEntry.get().strip()
     print(user)
@@ -35,8 +36,10 @@ def logInPressed(userNameEntry, passWordEntry, users, app, mainWindow):
             return
         else:
             print("Incorrect Password")
+            error_label.configure(text="Incorrect password or username")
             return
     print("User not found")
+    error_label.configure(text="Incorrect password or username")
 
 
 def createAccountPressed(userNameEntry, passWordEntry, users):
@@ -86,8 +89,9 @@ def signInScreen(app, users, mainWindow):
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_rowconfigure(1, weight=1)
     frame.grid_rowconfigure(2, weight=1)
-    frame.grid_rowconfigure(3, weight=1)
+    frame.grid_rowconfigure(3, weight=0)
     frame.grid_rowconfigure(4, weight=1)
+    frame.grid_rowconfigure(5, weight=1)
 
     # Welcome label
     welcome_label = ctk.CTkLabel(frame, text="Welcome! Login or Create an Account", font=("Arial", 24))
@@ -101,15 +105,19 @@ def signInScreen(app, users, mainWindow):
     passWordEntry = ctk.CTkEntry(frame, placeholder_text="Password", show="*", width=300)
     passWordEntry.grid(row=2, column=1, pady=0)
 
+    # Error Label
+    error_label = ctk.CTkLabel(frame, text="", font=("Arial", 16), text_color="red", height=1)
+    error_label.grid(row=3, column=1, pady=0, sticky="n")
+
     # Show password button
     show_password = ctk.BooleanVar()
     show_password_button = ctk.CTkCheckBox(frame, text="Show Password", variable=show_password, command=lambda: toggle_password_visibility(passWordEntry, show_password))
     show_password_button.grid(row=2, column=1, padx=(550, 0), sticky="w")
 
     # Log in button
-    logInButton = ctk.CTkButton(frame, text="Log In", command=lambda: logInPressed(userNameEntry, passWordEntry, users, app, mainWindow), width=300)
-    logInButton.grid(row=3, column=1, pady=0)
+    logInButton = ctk.CTkButton(frame, text="Log In", command=lambda: logInPressed(userNameEntry, passWordEntry, users, app, mainWindow, error_label), width=300)
+    logInButton.grid(row=4, column=1, pady=0)
 
     # Create account button
     createAccountButton = ctk.CTkButton(frame, text="Create Account", command=lambda: createAccountPressed(userNameEntry, passWordEntry, users), width=300)
-    createAccountButton.grid(row=4, column=1, pady=0)
+    createAccountButton.grid(row=5, column=1, pady=0)
