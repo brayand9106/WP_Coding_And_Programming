@@ -13,6 +13,7 @@ import customtkinter as ctk
 from Frames.Head_Frame import HeadFrame
 from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
+from Frames.SignIn_Frame import SignInFrame
 from Frames.Home_Frame import HomeFrame
 
 
@@ -34,11 +35,11 @@ def mainWindow(app, user):
     
 #Used to save after every added transaction
     app.save = lambda : saveTransactions(user, app.transactions)
-    app.grid_columnconfigure(0, weight=0)
     app.grid_columnconfigure(1, weight=0)
-    app.grid_rowconfigure(0, weight=0)  # Smaller weight for the header row
     app.grid_rowconfigure(1, weight=0)  # Larger weight for the main content row
-    
+    app.grid_rowconfigure(0, weight=0)
+    app.grid_columnconfigure(0, weight=0)
+
 #Creates the header using logo
     Head = HeadFrame(app, logo, go_home)
     Head.grid(row=0, column=0, columnspan=3, sticky="new")
@@ -106,6 +107,9 @@ if (__name__ == "__main__"):
     app.title("PyNancial Pro")
     app.geometry("1200x700")
 
+    app.grid_rowconfigure(0, weight=1)
+    app.grid_columnconfigure(0, weight=1)
+
     def go_home():
         for widget in app.MainFrame.winfo_children():
             widget.destroy()
@@ -113,6 +117,7 @@ if (__name__ == "__main__"):
         home_frame.grid(sticky="nsew")
 
 #Calls sign in screen
-    signIn.signInScreen(app, users, mainWindow)
+    signInFrame = SignInFrame(app, users, mainWindow)
+    signInFrame.grid(row=0, column=0, sticky="nsew")
 
     app.mainloop()
