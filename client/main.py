@@ -7,7 +7,6 @@ from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
 from PIL import Image
 import os
-import signIn
 import pandas as pd
 import customtkinter as ctk
 from Frames.Head_Frame import HeadFrame
@@ -15,6 +14,7 @@ from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
 from Frames.SignIn_Frame import SignInFrame
 from Frames.Home_Frame import HomeFrame
+from controller import save_transactions, load_transactions
 
 
 
@@ -28,13 +28,16 @@ logo = Image.open(logo_image_path).resize((200, 100))
 def mainWindow(app, user):
 
     # Initialize transactions attribute to use the transactions saved in excel
-    app.transactions = loadTransactions(user)
-    print(app.transactions)
+    app.transactions = load_transactions(user)
+    if not app.transactions:
+        print("No transactions found for user.")
+        app.transactions = {}
 
+    print(app.transactions)
     app.num_transactions = len(app.transactions)
     
 #Used to save after every added transaction
-    app.save = lambda : saveTransactions(user, app.transactions)
+    app.save = lambda : save_transactions(user, app.transactions)
     app.grid_columnconfigure(1, weight=0)
     app.grid_rowconfigure(1, weight=0)  # Larger weight for the main content row
     app.grid_rowconfigure(0, weight=0)
@@ -64,6 +67,7 @@ def mainWindow(app, user):
     app.MainFrame.grid_columnconfigure(0, weight=1)
     app.MainFrame.grid_rowconfigure(0, weight=1)
     home = HomeFrame(app.MainFrame, user)
+    app.user = user
     home.grid(sticky="nsew")
 
     Togglebutton.lift()
@@ -113,7 +117,7 @@ if (__name__ == "__main__"):
     def go_home():
         for widget in app.MainFrame.winfo_children():
             widget.destroy()
-        home_frame = HomeFrame(app.MainFrame, "TestUser")
+        home_frame = HomeFrame(app.MainFrame, app.user)
         home_frame.grid(sticky="nsew")
 
 #Calls sign in screen
