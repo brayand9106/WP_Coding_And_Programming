@@ -1,6 +1,8 @@
 import customtkinter as ctk
 import pandas as pd
 
+from controller import check_user_exists, create_user, verify_user
+
 class SignInFrame(ctk.CTkFrame):
     def __init__(self, master, users, mainWindow):
         super().__init__(master)
@@ -58,30 +60,30 @@ class SignInFrame(ctk.CTkFrame):
         username = self.userNameEntry.get().strip()
         password = self.passWordEntry.get().strip()
 
-        # Example validation logic
         if not username or not password:
-            self.error_label.configure(text="Username and password cannot be empty")
+            self.error_label.configure(text="Username and password cannot be empty", text_color="red")
             return
 
-        # Example user validation logic
-        if username in self.users and self.users[username]["Passwords"] == password:
+        if verify_user(username, password):
             for widget in self.master.winfo_children():
                 widget.destroy()
             self.mainWindow(self.master, username)
         else:
-            self.error_label.configure(text="Invalid username or password")
+            self.error_label.configure(text="Invalid username or password", text_color="red")
 
     def createAccountPressed(self):
         username = self.userNameEntry.get().strip()
         password = self.passWordEntry.get().strip()
-        if username and password:
-            self.users[username] = {"Passwords": password}
-            users_df = pd.DataFrame.from_dict(self.users, orient="index")
-            users_df.reset_index(inplace=True)
-            users_df.rename(columns={"index": "UserNames"}, inplace=True)
-            users_df.set_index("UserNames", inplace=True)
-            users_df.to_excel("Users.xlsx")
-            pd.DataFrame().to_excel(f"{username}.xlsx")
-            self.error_label.configure(text="Account created successfully", text_color="green")
-        else:
+
+        if not username or not password:
             self.error_label.configure(text="Username and password cannot be empty", text_color="red")
+            return
+
+        if check_user_exists(username):
+            self.error_label.configure(text="Username already exists", text_color="red")
+            return
+
+        if create_user(username, password):
+            self.error_label.configure(text="Account created successfully! Login to Continue", text_color="green")
+        else:
+            self.error_label.configure(text="Failed to create account", text_color="red")

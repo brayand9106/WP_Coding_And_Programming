@@ -10,6 +10,23 @@ def create_user():
     db.session.commit()
     return jsonify({'message': 'User created successfully'}), 201
 
+@app.route('/api/users/<username>', methods=['GET'])
+def check_user(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({'message': 'User exists'}), 200
+    else:
+        return jsonify({'message': 'User does not exist'}), 404
+    
+@app.route('/api/users/verify', methods=['POST'])
+def verify_user():
+    data = request.get_json()
+    user = User.query.filter_by(username=data['username'], password=data['password']).first()
+    if user:
+        return jsonify({'message': 'User verified'}), 200
+    else:
+        return jsonify({'message': 'Invalid username or password'}), 401
+
 @app.route('/api/transactions', methods=['POST'])
 def create_transaction():
     data = request.get_json()
