@@ -14,7 +14,7 @@ from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
 from Frames.SignIn_Frame import SignInFrame
 from Frames.Home_Frame import HomeFrame
-from controller import save_transactions, load_transactions
+from controller import save_transaction, load_transactions
 
 
 
@@ -36,8 +36,6 @@ def mainWindow(app, user):
     print(app.transactions)
     app.num_transactions = len(app.transactions)
     
-#Used to save after every added transaction
-    app.save = lambda : save_transactions(user, app.transactions)
     app.grid_columnconfigure(1, weight=0)
     app.grid_rowconfigure(1, weight=0)  # Larger weight for the main content row
     app.grid_rowconfigure(0, weight=0)
