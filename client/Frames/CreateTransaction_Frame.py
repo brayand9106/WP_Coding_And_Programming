@@ -1,4 +1,5 @@
 import customtkinter as ctk
+from controller import save_transaction
 
 '''
 This frame creates a report creation environment that allows the user
@@ -64,17 +65,27 @@ class CreateTransactionFrame(ctk.CTkFrame):
         
     def submit_transaction(self):
 
-        report_text = self.entry.get()
+        title = self.entry.get()
         income = self.income_entry.get()
         expenses = self.expense_entry.get()
         date = self.date_entry.get()
-        
 
-#Adds transaction to corresponding location in the dictionary
-        self.app.transactions[self.app.num_transactions + 1] = {0 : self.app.num_transactions + 1, 1 : report_text, 2: int(income), 3 : int(expenses), 4: date}
-        print(self.app.transactions)
-        self.app.num_transactions = len(self.app.transactions)
-#Loads save
-        self.app.save()
-        print(f"Transaction submitted: {report_text}, Income: {income}, Expenses: {expenses}, Date: {date}")
+        user = self.app.user
         
+        print(title, income, expenses, date, user)
+
+        status_code = save_transaction(user, title, float(income), float(expenses), date)
+        if status_code == 201:
+            # Adds transaction to corresponding location in the dictionary
+            self.app.transactions[self.app.num_transactions + 1] = {
+                0: self.app.num_transactions + 1, 
+                1: title, 
+                2: float(income), 
+                3: float(expenses), 
+                4: date
+            }
+            print(self.app.transactions)
+            self.app.num_transactions = len(self.app.transactions)
+            print(f"Transaction submitted: {title}, Income: {income}, Expenses: {expenses}, Date: {date}")
+        else:
+            print(f"Failed to save transaction. Status code: {status_code}")
