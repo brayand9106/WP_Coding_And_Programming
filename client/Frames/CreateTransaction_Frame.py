@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from controller import save_transaction
-
+from CTkMessagebox import CTkMessagebox as ctkm
 '''
 This frame creates a report creation environment that allows the user
 to input expenses and income to be tracked
@@ -61,7 +61,24 @@ class CreateTransactionFrame(ctk.CTkFrame):
 
         self.submit_button = ctk.CTkButton(self, text="Submit", command=lambda: self.submit_transaction())
         self.submit_button.grid(row=8, column=0, padx=10, pady=10)
+
+    def confirmPopup(app, title, income, expenses, date):
+
+        #Creates the popup with the transaction details and 2 buttons
+        msg = ctkm(title = "Confirm Transaction?", 
+            message = "Create transaction with info\nTitle: " + title + "\nIncome: " + income + "\nExpenses: " + expenses + "\nDate: " + date,
+            option_1="Confirm", option_2="Cancel", icon = "check")
         
+        #Retrieves the button clicked by the user
+        confirm = msg.get()
+
+        #Returns if users confirms or cancels the transaction
+        if confirm == "Confirm":
+            print("Transaction confirmed")
+            return True
+        elif confirm == "Cancel":
+            print("Transaction cancelled")
+            return False    
         
     def submit_transaction(self):
 
@@ -74,18 +91,29 @@ class CreateTransactionFrame(ctk.CTkFrame):
         
         print(title, income, expenses, date, user)
 
-        status_code = save_transaction(user, title, float(income), float(expenses), date)
-        if status_code == 201:
-            # Adds transaction to corresponding location in the dictionary
-            self.app.transactions[self.app.num_transactions + 1] = {
-                0: self.app.num_transactions + 1, 
-                1: title, 
-                2: float(income), 
-                3: float(expenses), 
-                4: date
-            }
-            print(self.app.transactions)
-            self.app.num_transactions = len(self.app.transactions)
-            print(f"Transaction submitted: {title}, Income: {income}, Expenses: {expenses}, Date: {date}")
-        else:
-            print(f"Failed to save transaction. Status code: {status_code}")
+        #Calls to pull up the popup window
+        userConfirm = self.confirmPopup(title, income, expenses, date)
+
+        #If the user cancels the transaction it does not save
+        if userConfirm == False:
+            return
+        
+        #If the user confirms the transaction it saves
+        elif userConfirm == True:
+            status_code = save_transaction(user, title, float(income), float(expenses), date)
+            if status_code == 201:
+                # Adds transaction to corresponding location in the dictionary
+                self.app.transactions[self.app.num_transactions + 1] = {
+                    0: self.app.num_transactions + 1, 
+                    1: title, 
+                    2: float(income), 
+                    3: float(expenses), 
+                    4: date
+                }
+                print(self.app.transactions)
+                self.app.num_transactions = len(self.app.transactions)
+                print(f"Transaction submitted: {title}, Income: {income}, Expenses: {expenses}, Date: {date}")
+            else:
+                print(f"Failed to save transaction. Status code: {status_code}")
+
+    
