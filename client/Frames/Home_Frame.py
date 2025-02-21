@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.dates import DateFormatter, AutoDateLocator
 from datetime import datetime, timedelta
 
 class HomeFrame(ctk.CTkFrame):
@@ -73,8 +74,11 @@ class HomeFrame(ctk.CTkFrame):
         } for t in filtered_transactions])
 
         fig, ax = plt.subplots(figsize=(10, 6))
-        sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings")
+        sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings", errorbar=None)
         ax.set_title("Cumulative Earnings Over the Past Week")
+
+        ax.xaxis.set_major_formatter(DateFormatter("%m-%d %A"))
+        ax.xaxis.set_major_locator(AutoDateLocator())
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
         fig.tight_layout(pad=3.0)
 

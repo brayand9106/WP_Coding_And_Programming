@@ -3,6 +3,7 @@ import seaborn as sns
 import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter, AutoDateLocator
 from datetime import datetime, timedelta
 
 '''
@@ -68,8 +69,8 @@ class StatisticsFrame(ctk.CTkFrame):
             } for t in filtered_transactions])
 
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.lineplot(data=df, x="Date", y="Income", ax=ax, label="Income")
-            sns.lineplot(data=df, x="Date", y="Expenses", ax=ax, label="Expenses")
+            sns.lineplot(data=df, x="Date", y="Income", ax=ax, label="Income", errorbar=None)
+            sns.lineplot(data=df, x="Date", y="Expenses", ax=ax, label="Expenses", errorbar=None)
             ax.set_title("Income and Expenses Over Time")
         elif graph_type == "Net Earnings":
             df = pd.DataFrame([{
@@ -79,7 +80,7 @@ class StatisticsFrame(ctk.CTkFrame):
             } for t in filtered_transactions])
 
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.lineplot(data=df, x="Date", y="Net Earnings", ax=ax, label="Net Earnings")
+            sns.lineplot(data=df, x="Date", y="Net Earnings", ax=ax, label="Net Earnings", errorbar=None)
             ax.set_title("Net Earnings Over Time")
         elif graph_type == "Cumulative Earnings":
             cumulative_earnings = 0
@@ -90,10 +91,13 @@ class StatisticsFrame(ctk.CTkFrame):
             } for t in filtered_transactions])
 
             fig, ax = plt.subplots(figsize=(10, 6))
-            sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings")
+            sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings", errorbar=None)
             ax.set_title("Cumulative Earnings Over Time")
+        
+        if time_range == "1 Week":
+            ax.xaxis.set_major_formatter(DateFormatter("%m-%d %A"))
 
-
+        ax.xaxis.set_major_locator(AutoDateLocator())
         ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
         fig.tight_layout(pad=3.0)
 

@@ -14,7 +14,7 @@ from Frames.Sidebar_Frame import SideBarFrame
 from Frames.ToggleButton_Frame import ToggleButtonFrame
 from Frames.SignIn_Frame import SignInFrame
 from Frames.Home_Frame import HomeFrame
-from controller import save_transaction, load_transactions
+from controller import load_transactions
 
 
 
@@ -69,36 +69,7 @@ def mainWindow(app, user):
     home.grid(sticky="nsew")
 
     Togglebutton.lift()
-    
-#Saves transactions to excel file
-def saveTransactions(user, data):    
-    print("Saving data")
 
-#Takes dictionary and converts it to a dataframe
-    savedData = pd.DataFrame.from_dict(data, orient = 'index')
-    print(savedData)
-
-#Save dataframe to excel file
-    savedData.to_excel(excel_writer = user + ".xlsx")
-
-#Loads transactions from excel file
-def loadTransactions(user):
-
-#Creates a dataframe from excel file
-    savedData = pd.read_excel(user + ".xlsx")
-    print("Loading saved data")
-    print(savedData)
-
-#Converts dataframe to dictionary
-    return savedData.to_dict(orient = 'index')
-
-
-users = pd.read_excel("Users.xlsx")
-print(users)
-users = users.set_index("UserNames")
-print(users)
-users = users.to_dict(orient = "index")
-print(users)
 if (__name__ == "__main__"):
     print("Main Executed")
 
@@ -119,7 +90,7 @@ if (__name__ == "__main__"):
         home_frame.grid(sticky="nsew")
 
 #Calls sign in screen
-    signInFrame = SignInFrame(app, users, mainWindow)
+    signInFrame = SignInFrame(app, mainWindow)
     signInFrame.grid(row=0, column=0, sticky="nsew")
 
     app.mainloop()

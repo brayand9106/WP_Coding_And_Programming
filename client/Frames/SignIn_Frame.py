@@ -4,9 +4,8 @@ import pandas as pd
 from controller import check_user_exists, create_user, verify_user
 
 class SignInFrame(ctk.CTkFrame):
-    def __init__(self, master, users, mainWindow):
+    def __init__(self, master, mainWindow):
         super().__init__(master)
-        self.users = users
         self.mainWindow = mainWindow
 
         # Ensure SignInFrame expands
