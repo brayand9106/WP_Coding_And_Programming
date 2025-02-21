@@ -1,0 +1,3 @@
+List of all bugs/things to do identified
+1. After a successful transaction submission refresh the create transaction window
+2. Sorts do not currently work due to changes in data format
