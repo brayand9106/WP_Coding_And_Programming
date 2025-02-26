@@ -11,7 +11,6 @@ class HelpFrame(ctk.CTkScrollableFrame):
         self.help_label = ctk.CTkLabel(self, text="Help", font=("Arial", 24))
         self.help_label.grid(row=0, column=0, padx=10, pady=10, sticky="new")
 
-
         self.buttons_frame = ctk.CTkFrame(self)
         self.buttons_frame.grid(row=2, column=0, padx=10, pady=10, sticky="new")
 
@@ -20,12 +19,19 @@ class HelpFrame(ctk.CTkScrollableFrame):
         self.create_toggle_button("Create Transaction Window", self.toggle_createtransaction_frame)
         self.create_toggle_button("View Transactions Window", self.toggle_viewtransactions_frame)
         self.create_toggle_button("Statistics Window", self.toggle_statistics_frame)
+        self.create_toggle_button("Help bot", self.toggle_helpbot_frame)
 
-        self.overview_text = ctk.CTkLabel(self, text="", font=("Arial", 16), wraplength=400)
-        self.overview_text.grid(row=3, column=0, padx=10, pady=10, sticky="new")
+        self.content_frame = ctk.CTkFrame(self)
+        self.content_frame.grid(row=3, column=0, padx=10, pady=10, sticky="esw")
 
-        self.image_label = ctk.CTkLabel(self, text="")
-        self.image_label.grid(row=4, column=0, padx=10, pady=10, sticky="new")
+        self.overview_text = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 16), wraplength=400)
+        self.overview_text.grid(row=0, column=0, padx=10, pady=10, sticky="new")
+
+        self.image_label = ctk.CTkLabel(self.content_frame, text="")
+        self.image_label.grid(row=1, column=0, padx=10, pady=10, sticky="new")
+
+        #self.user_input = ctk.CTkEntry(self.content_frame, width=400)
+        #self.submit_button = ctk.CTkButton(self.content_frame, text="Submit Question", command=self.get_chatbot_response)
 
     def create_toggle_button(self, text, command):
         button = ctk.CTkButton(self.buttons_frame, text=text, command=command)
@@ -51,6 +57,9 @@ class HelpFrame(ctk.CTkScrollableFrame):
     def toggle_statistics_frame(self):
         self.overview_text.configure(text="The statistics window provides an interface to generate a graphical summary of incomes and expenses over either a week, a month, or a year using the “Select Time Range” dropdown menu. Graphs can be further customized to include just income and expenses or net earnings or cumulative earnings from the “Select Graph Type” dropdown. After selecting your desired time frame and graph type, clicking the “Generate Graph” button to create your graphic.")
         self.display_image(os.path.join(os.getcwd(), "Images", "Help_Images", "Statistics_image.png"))
+
+    def toggle_helpbot_frame(self):
+        pass
 
     def display_image(self, image_path):
         image = Image.open(image_path)
