@@ -55,3 +55,12 @@ def load_transactions(user):
         except requests.exceptions.JSONDecodeError:
             return {}
     return {}
+
+def get_chatbot_response(user_input):
+    data = {
+        "input": user_input
+    }
+    response = requests.post(f"{BASE_URL}/chatbot", json=data)
+    if response.status_code == 200:
+        return response.json()['response']
+    return "Error processing request"

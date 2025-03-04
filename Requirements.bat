@@ -6,3 +6,4 @@ pip install flask flask_sqlalchemy requests
 pip install CTkMessagebox
 pip install transformers
 pip install torch
+pip install ollama
