@@ -41,9 +41,7 @@ def save_transaction(user, title, income, expense, date):
         "date": date
     }
     response = requests.post(f"{BASE_URL}/transactions", json=transaction_data)
-    if response.status_code != 201:
-        print(f"Failed to save transaction. Response: {response.text}")
-    return response.status_code
+    return response
 
 def load_transactions(user):
     user_id = get_user_id(user)
@@ -51,10 +49,23 @@ def load_transactions(user):
     if response.status_code == 200:
         try:
             transactions = response.json()
-            return {i+1: {0: t['id'], 1: t['title'], 2: t['income'], 3: t['expense'], 4: t['date']} for i, t in enumerate(transactions)}
+            return [
+                {
+                    "id": t['id'],
+                    "title": t['title'],
+                    "income": t['income'],
+                    "expenses": t['expense'],
+                    "date": t['date']
+                }
+                for t in transactions
+            ]
         except requests.exceptions.JSONDecodeError:
-            return {}
-    return {}
+            return []
+    return []
+
+def delete_transaction(transaction_id):
+    response = requests.delete(f"{BASE_URL}/transactions/{transaction_id}")
+    return response.status_code == 200
 
 def get_chatbot_response(user_input):
     data = {

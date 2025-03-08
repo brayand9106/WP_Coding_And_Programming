@@ -1,3 +1,5 @@
 List of all bugs/things to do identified
 1. After a successful transaction submission refresh the create transaction window
 2. Sorts do not currently work due to changes in data format
+3. When scrolling down first in the view transactions then sorting with real time search,
+the top results will cutoff, but can be reversed by retyping in the search. 3/6/2025

@@ -5,7 +5,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter, AutoDateLocator
 from datetime import datetime, timedelta
-
 '''
 This frame creates a view transactions environment that allows the user 
 to review all transactions done
@@ -52,8 +51,8 @@ class StatisticsFrame(ctk.CTkFrame):
             start_date = end_date - timedelta(days=365)
 
         filtered_transactions = [
-            transaction for transaction in self.app.transactions.values()
-            if start_date <= datetime.strptime(transaction[4], "%m/%d/%Y") <= end_date
+            transaction for transaction in self.app.transactions
+            if start_date <= datetime.strptime(transaction.date, "%m/%d/%Y") <= end_date
         ]
 
         if not filtered_transactions:
@@ -62,10 +61,10 @@ class StatisticsFrame(ctk.CTkFrame):
 
         if graph_type == "Income/Expenses":
             df = pd.DataFrame([{
-                "Transaction": t[1],
-                "Income": float(t[2]),
-                "Expenses": float(t[3]),
-                "Date": datetime.strptime(t[4], "%m/%d/%Y")
+                "Transaction": t.getTransactionText(),
+                "Income": t.getIncome(),
+                "Expenses": t.getExpenses(),
+                "Date": datetime.strptime(t.getDate(), "%m/%d/%Y")
             } for t in filtered_transactions])
 
             fig, ax = plt.subplots(figsize=(10, 6))
@@ -74,9 +73,9 @@ class StatisticsFrame(ctk.CTkFrame):
             ax.set_title("Income and Expenses Over Time")
         elif graph_type == "Net Earnings":
             df = pd.DataFrame([{
-                "Transaction": t[1],
-                "Net Earnings": float(t[2]) - float(t[3]),
-                "Date": datetime.strptime(t[4], "%m/%d/%Y")
+                "Transaction": t.getTransactionText(),
+                "Net Earnings": t.getIncome() - t.getExpenses(),
+                "Date": datetime.strptime(t.getDate(), "%m/%d/%Y")
             } for t in filtered_transactions])
 
             fig, ax = plt.subplots(figsize=(10, 6))
@@ -85,9 +84,9 @@ class StatisticsFrame(ctk.CTkFrame):
         elif graph_type == "Cumulative Earnings":
             cumulative_earnings = 0
             df = pd.DataFrame([{
-                "Transaction": t[1],
-                "Cumulative Earnings": (cumulative_earnings := cumulative_earnings + (float(t[2]) - float(t[3]))),
-                "Date": datetime.strptime(t[4], "%m/%d/%Y")
+                "Transaction": t.getTransactionText(),
+                "Cumulative Earnings": (cumulative_earnings := cumulative_earnings + (t.getIncome() - t.getExpenses())),
+                "Date": datetime.strptime(t.getDate(), "%m/%d/%Y")
             } for t in filtered_transactions])
 
             fig, ax = plt.subplots(figsize=(10, 6))

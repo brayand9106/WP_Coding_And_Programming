@@ -13,7 +13,6 @@ class HomeFrame(ctk.CTkFrame):
         self.grid_rowconfigure(0, weight=0)  # Weight for the top row
         self.grid_rowconfigure(1, weight=1)  # Make the body frame row expandable
 
-        
         self.app = master.master
         self.num_transactions = len(self.app.transactions)
         self.news_info = "Welcome to the Home! Currently you are using PyNancial Pro Version 1.0.0 which is the latest version. Stay tuned for more updates!"
@@ -49,7 +48,6 @@ class HomeFrame(ctk.CTkFrame):
         self.weekly_report_label.grid(row=0, column=0, padx=10, pady=10)
         self.generate_weekly_report()
 
-
         self.news = ctk.CTkLabel(self.news_frame, text=f"News: \n {self.news_info} ", font=("Arial", 24), anchor="w", wraplength=300)
         self.news.grid(row=0, column=0, padx=10, pady=10)
         
@@ -58,8 +56,8 @@ class HomeFrame(ctk.CTkFrame):
         start_date = end_date - timedelta(weeks=1)
 
         filtered_transactions = [
-            transaction for transaction in self.app.transactions.values()
-            if start_date <= datetime.strptime(transaction[4], "%m/%d/%Y") <= end_date
+            transaction for transaction in self.app.transactions
+            if start_date <= datetime.strptime(transaction.date, "%m/%d/%Y") <= end_date
         ]
 
         if not filtered_transactions:
@@ -68,9 +66,9 @@ class HomeFrame(ctk.CTkFrame):
 
         cumulative_earnings = 0
         df = pd.DataFrame([{
-            "Transaction": t[1],
-            "Cumulative Earnings": (cumulative_earnings := cumulative_earnings + (float(t[2]) - float(t[3]))),
-            "Date": datetime.strptime(t[4], "%m/%d/%Y")
+            "Transaction": t.getTransactionText(),
+            "Cumulative Earnings": (cumulative_earnings := cumulative_earnings + (float(t.getIncome()) - float(t.getExpenses()))),
+            "Date": datetime.strptime(t.getDate(), "%m/%d/%Y")
         } for t in filtered_transactions])
 
         fig, ax = plt.subplots(figsize=(10, 6))

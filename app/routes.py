@@ -32,10 +32,26 @@ def verify_user():
 @app.route('/api/transactions', methods=['POST'])
 def create_transaction():
     data = request.get_json()
-    new_transaction = Transactions(user_id=data['user_id'], title=data['title'], income=data['income'], expense=data['expense'], date=data['date'])
+    new_transaction = Transactions(
+        user_id=data['user_id'],
+        title=data['title'],
+        income=data['income'],
+        expense=data['expense'],
+        date=data['date']
+    )
     db.session.add(new_transaction)
     db.session.commit()
-    return jsonify({'message': 'Transaction created successfully'}), 201
+    return jsonify({'message': 'Transaction created successfully', 'transaction_id': new_transaction.id}), 201
+
+@app.route('/api/transactions/<int:transaction_id>', methods=['DELETE'])
+def delete_transaction(transaction_id):
+    transaction = Transactions.query.get(transaction_id)
+    if transaction:
+        db.session.delete(transaction)
+        db.session.commit()
+        return jsonify({'message': 'Transaction deleted successfully'}), 200
+    else:
+        return jsonify({'message': 'Transaction not found'}), 404
 
 @app.route('/api/users/id/<username>', methods=['GET'])
 def get_user_id(username):
@@ -53,7 +69,7 @@ def get_transactions(user_id):
         'title': t.title,
         'income': t.income,
         'expense': t.expense,
-        'date': t.date
+        'date': t.date if isinstance(t.date, str) else t.date.strftime("%m/%d/%Y")  # Ensure date is formatted as a string
     } for t in transactions])
 
 @app.route('/api/chatbot', methods=['POST'])

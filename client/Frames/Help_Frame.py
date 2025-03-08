@@ -20,7 +20,7 @@ class HelpFrame(ctk.CTkScrollableFrame):
         self.create_toggle_button("Create Transaction Window", self.toggle_createtransaction_frame)
         self.create_toggle_button("View Transactions Window", self.toggle_viewtransactions_frame)
         self.create_toggle_button("Statistics Window", self.toggle_statistics_frame)
-        self.create_toggle_button("Help bot", self.toggle_helpbot_frame)
+        self.create_toggle_button("Help bot (Llama A.I.)", self.toggle_helpbot_frame)
 
         self.content_frame = ctk.CTkFrame(self)
         self.content_frame.grid(row=3, column=0, padx=10, pady=10, sticky="esw")
