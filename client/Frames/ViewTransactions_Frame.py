@@ -18,14 +18,14 @@ class ViewTransactionsFrame(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(1, weight=1)  # Ensure the listbox expands
 
-        self.label = ctk.CTkLabel(self, text="View Transactions", font=("Arial", 34))
-        self.label.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+        self.label = ctk.CTkLabel(self, text="View Transactions", font=("Arial", 34, "bold"))
+        self.label.grid(row=0, column=0, padx=10, pady=10, sticky="ew", columnspan=2)
 
-        self.search_label = ctk.CTkLabel(self, text="Search", font=("Arial", 12, "bold"))
+        self.search_label = ctk.CTkLabel(self, text="Search", font=("Arial", 20))
         self.search_label.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
         self.filter_entry = ctk.CTkEntry(self, placeholder_text="Search transactions")
-        self.filter_entry.grid(row=1, column=1, padx=10, pady=10, sticky="ew")
+        self.filter_entry.grid(row=1, column=0, padx=(80,10), pady=10, sticky="ew", columnspan=2)
         self.filter_entry.bind("<KeyRelease>", self.real_time_search)
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self)

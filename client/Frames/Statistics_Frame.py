@@ -55,8 +55,14 @@ class StatisticsFrame(ctk.CTkFrame):
             if start_date <= datetime.strptime(transaction.date, "%m/%d/%Y") <= end_date
         ]
 
+        # Clear previous content in the scrollable_frame
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+
         if not filtered_transactions:
             print("No transactions found for the selected time range.")
+            no_transactions_label = ctk.CTkLabel(self.scrollable_frame, text="No transactions to analyze for the given time period.", font=("Arial", 20))
+            no_transactions_label.pack(expand=True)  # Center the label
             return
 
         if graph_type == "Income/Expenses":

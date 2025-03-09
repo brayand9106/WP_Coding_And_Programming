@@ -60,8 +60,15 @@ class HomeFrame(ctk.CTkFrame):
             if start_date <= datetime.strptime(transaction.date, "%m/%d/%Y") <= end_date
         ]
 
+        # Clear previous content in the weekly_report_frame
+        for widget in self.weekly_report_frame.winfo_children():
+            if widget != self.weekly_report_label:
+                widget.destroy() 
+
         if not filtered_transactions:
             print("No transactions found for the past week.")
+            no_transactions_label = ctk.CTkLabel(self.weekly_report_frame, text="No transactions found for the past week.", font=("Arial", 20))
+            no_transactions_label.grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
             return
 
         cumulative_earnings = 0
@@ -83,3 +90,4 @@ class HomeFrame(ctk.CTkFrame):
         canvas = FigureCanvasTkAgg(fig, master=self.weekly_report_frame)
         canvas.draw()
         canvas.get_tk_widget().grid(row=1, column=0, padx=10, pady=10, sticky="nsew")
+
