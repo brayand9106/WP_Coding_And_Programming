@@ -1,8 +1,16 @@
 from flask import request, jsonify
 from app import app, db
 from app.models import Users, Transactions
-import ollama
-from ollama import chat, ChatResponse
+
+try:
+    import ollama
+    hasollama=True
+except ImportError:
+    print("Please install the 'ollama' package using 'pip install ollama'")
+    hasollama=False
+
+if hasollama:
+    from ollama import chat, ChatResponse
 
 @app.route('/api/users', methods=['POST'])
 def create_user():
@@ -74,6 +82,8 @@ def get_transactions(user_id):
 
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
+    if not hasollama:
+        return jsonify({'error': 'ollama package is not installed. Please install the package using "pip install ollama"'}), 500
     data = request.get_json()
     user_input = data['input']
 
