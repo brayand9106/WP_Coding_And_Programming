@@ -7,6 +7,7 @@ class SignInFrame(ctk.CTkFrame):
     def __init__(self, master, mainWindow):
         super().__init__(master)
         self.mainWindow = mainWindow
+        self.log_attempts = 0
 
         # Ensure SignInFrame expands
         self.grid_rowconfigure(0, weight=1)
@@ -60,7 +61,7 @@ class SignInFrame(ctk.CTkFrame):
         password = self.passWordEntry.get().strip()
 
         if not username or not password:
-            self.error_label.configure(text="Username and password cannot be empty", text_color="red")
+            self.error_label.configure(text="Username and password cannot be empty", text_color="red", font=("Arial", 16))
             return
 
         if verify_user(username, password):
@@ -68,21 +69,25 @@ class SignInFrame(ctk.CTkFrame):
                 widget.destroy()
             self.mainWindow(self.master, username)
         else:
-            self.error_label.configure(text="Invalid username or password", text_color="red")
+            self.error_label.configure(text="Invalid username or password", text_color="red", font=("Arial", 16))
+            self.log_attempts += 1
+            if self.log_attempts >= 5:
+                self.error_label.configure(text="Too many failed login attempts, try again later", text_color="red", font=("Arial", 14))
+                self.logInButton.configure(state="disabled")
 
     def createAccountPressed(self):
         username = self.userNameEntry.get().strip()
         password = self.passWordEntry.get().strip()
 
         if not username or not password:
-            self.error_label.configure(text="Username and password cannot be empty", text_color="red")
+            self.error_label.configure(text="Username and password cannot be empty", text_color="red", font=("Arial", 16))
             return
 
         if check_user_exists(username):
-            self.error_label.configure(text="Username already exists", text_color="red")
+            self.error_label.configure(text="Username already exists", text_color="red", font=("Arial", 16))
             return
 
         if create_user(username, password):
-            self.error_label.configure(text="Account created successfully! Login to Continue", text_color="green")
+            self.error_label.configure(text="Account created successfully! Login to Continue", text_color="green", font=("Arial", 16))
         else:
-            self.error_label.configure(text="Failed to create account", text_color="red")
+            self.error_label.configure(text="Failed to create account", text_color="red", font=("Arial", 16))
