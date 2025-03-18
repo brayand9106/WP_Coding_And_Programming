@@ -24,6 +24,12 @@ logo = Image.open(logo_image_path).resize((200, 100))
 
 icon_path = os.path.join(os.getcwd(), "Images", "PynancialProIcon.ico")
 
+def go_home(app):
+    for widget in app.MainFrame.winfo_children():
+        widget.destroy()
+    home_frame = HomeFrame(app.MainFrame, app.user)
+    home_frame.grid(sticky="nsew")
+
 # Opens main window
 def mainWindow(app, user):
     # Initialize transactions attribute to use the transactions saved in excel
@@ -43,21 +49,21 @@ def mainWindow(app, user):
     app.grid_columnconfigure(0, weight=0)
 
     # Creates the header using logo
-    Head = HeadFrame(app, logo, go_home)
+    Head = HeadFrame(app, logo, lambda: go_home(app))
     Head.grid(row=0, column=0, columnspan=3, sticky="new")
 
     app.grid_columnconfigure(1, weight=10000)
     app.grid_rowconfigure(1, weight=0)
     
     # Creates sidebar using sidebarframe file
-    Sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "Help")
-    Sidebar.grid(row=1, column=0, sticky="nsw")
+    app.sidebar = SideBarFrame(app, "Create Transaction", "View Transactions", "Statistics", "Settings", "Help")
+    app.sidebar.grid(row=1, column=0, sticky="nsw")
     # Configure Sidebar to expand vertically
     app.grid_rowconfigure(1, weight=1)
 
     # Creates open and close button
-    Togglebutton = ToggleButtonFrame(app, Sidebar)
-    Togglebutton.grid(row=1, column=1, sticky="nw")
+    app.togglebutton = ToggleButtonFrame(app, app.sidebar)
+    app.togglebutton.grid(row=1, column=1, sticky="nw")
  
     # Creates the main frame
     app.MainFrame = ctk.CTkFrame(app)
@@ -69,7 +75,7 @@ def mainWindow(app, user):
     app.user = user
     home.grid(sticky="nsew")
 
-    Togglebutton.lift()
+    app.togglebutton.lift()
 
 if (__name__ == "__main__"):
     print("Main Executed")
@@ -85,12 +91,8 @@ if (__name__ == "__main__"):
 
     app.grid_rowconfigure(0, weight=1)
     app.grid_columnconfigure(0, weight=1)
-
-    def go_home():
-        for widget in app.MainFrame.winfo_children():
-            widget.destroy()
-        home_frame = HomeFrame(app.MainFrame, app.user)
-        home_frame.grid(sticky="nsew")
+    
+    app.dark_mode = True
 
     # Calls sign in screen
     signInFrame = SignInFrame(app, mainWindow)

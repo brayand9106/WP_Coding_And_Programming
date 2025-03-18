@@ -15,7 +15,7 @@ class SideBarFrame(ctk.CTkFrame):
     def __init__(self, master, *navs):
         super().__init__(master)
         self.navList = []
-        self.master = master
+        self.app = master
 
         # Configure grid for vertical stretching
         self.grid_columnconfigure(0, weight=1)  # Ensure buttons fill the width
