@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox as ctkm
-from Frames.utils import recreate_frames
+from Frames.utils import recreate_frames, logout
 '''
 This frame creates a settings environment that allows the user 
 to change the settings of the dashboard
@@ -30,6 +30,9 @@ class SettingsFrame(ctk.CTkFrame):
 
         self.themebutton = ctk.CTkButton(self, text="Change Theme", command=self.change_theme_popup)
         self.themebutton.grid(row=2, column=0, padx=10, pady=10, sticky="n")
+
+        self.logoutbutton = ctk.CTkButton(self, text="Logout", command=lambda: logout(self.app))
+        self.logoutbutton.grid(row=3, column=0, padx=10, pady=10, sticky="n")
 
     def darkmode(self):
         print("Dark Mode Toggled")
