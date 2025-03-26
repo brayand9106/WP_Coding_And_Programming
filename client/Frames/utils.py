@@ -1,5 +1,10 @@
 from Frames.SignIn_Frame import SignInFrame
 
+"""
+This file contains utility functions which affect the entirety of the application
+and its frames
+"""
+
 def recreate_frames(app):
     # Destroy existing frames if they exist
     for widget in app.winfo_children():

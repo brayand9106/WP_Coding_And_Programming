@@ -1,3 +1,8 @@
+"""
+This class creates the transaction object which is how Pynancial Pro 
+keeps track of the user's transactions
+"""
+
 class Transaction:
     def __init__(self, id, title, income, expenses, date):
         self.id = id

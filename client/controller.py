@@ -1,4 +1,5 @@
 import requests
+import json
 
 BASE_URL = "http://127.0.0.1:5000/api"
 
@@ -67,11 +68,32 @@ def delete_transaction(transaction_id):
     response = requests.delete(f"{BASE_URL}/transactions/{transaction_id}")
     return response.status_code == 200
 
-def get_chatbot_response(user_input):
+def get_chatbot_response(user_input, stream=False):
     data = {
         "input": user_input
     }
+    headers = {
+        "Accept": "application/json"
+    }
+    try:
+        response = requests.post(f"{BASE_URL}/chatbot", json=data, headers=headers)
+        response.raise_for_status()
+
+        if stream:
+            for line in response.iter_lines(decode_unicode=True):
+                if line:
+                    yield json.loads(line)
+        else:
+                return response.json()['response']
+    except requests.exceptions.RequestException as e:
+        print(f"RequestException: {str(e)}")
+        yield {"error": f"Request failed: {str(e)}"}
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        yield {"error": f"Unexpected error: {str(e)}"}
+    '''
     response = requests.post(f"{BASE_URL}/chatbot", json=data)
     if response.status_code == 200:
         return response.json()['response']
-    return "Error processing request"
+    return "Error processing request"'
+    '''

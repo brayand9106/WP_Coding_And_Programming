@@ -6,6 +6,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.dates import DateFormatter, AutoDateLocator
 from datetime import datetime, timedelta
 
+"""
+This class creates the Home menu for the user when they first login or manually enter
+home. It displays a summary of the user's transactions, a weekly report, and news.
+"""
+
 class HomeFrame(ctk.CTkFrame):
     def __init__(self, master, user):
         super().__init__(master)

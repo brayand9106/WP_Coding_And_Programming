@@ -1,7 +1,15 @@
+import threading 
 import customtkinter as ctk
 from PIL import Image, ImageTk
 import os
-from controller import get_chatbot_response
+from controller import get_chatbot_response as chatbot_response_controller
+import time
+
+'''
+This class creates a help window for the user to be able to learn how to use
+Pynancial Pro
+
+'''
 
 class HelpFrame(ctk.CTkScrollableFrame):
     def __init__(self, master):
@@ -24,6 +32,9 @@ class HelpFrame(ctk.CTkScrollableFrame):
 
         self.content_frame = ctk.CTkFrame(self)
         self.content_frame.grid(row=3, column=0, padx=10, pady=10, sticky="esw")
+        self.content_frame.grid_rowconfigure(0, weight=1)
+        self.content_frame.grid_rowconfigure(1, weight=1)
+
 
         self.overview_text = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 16), wraplength=400)
         self.overview_text.grid(row=0, column=0, padx=10, pady=10, sticky="new")
@@ -32,7 +43,7 @@ class HelpFrame(ctk.CTkScrollableFrame):
         self.image_label.grid(row=1, column=0, padx=10, pady=10, sticky="new")
 
         self.user_input = ctk.CTkEntry(self.content_frame, width=400)
-        self.submit_button = ctk.CTkButton(self.content_frame, text="Submit Question", command=self.get_chatbot_response)
+        self.submit_button = ctk.CTkButton(self.content_frame, text="Submit Question", command=self.fetch_response)
 
     def create_toggle_button(self, text, command):
         button = ctk.CTkButton(self.buttons_frame, text=text, command=command)
@@ -75,6 +86,7 @@ class HelpFrame(ctk.CTkScrollableFrame):
 
     def toggle_helpbot_frame(self):
         self.clear_content_frame()
+        self.overview_text.configure(text="Please provide your query or question below, and I will assist you based on your questions.")
         self.user_input.grid(row=0, column=0, padx=10, pady=10, sticky="new")
         self.submit_button.grid(row=1, column=0, padx=10, pady=10, sticky="new")
         self.overview_text.grid(row=2, column=0, padx=10, pady=10, sticky="new")
@@ -85,12 +97,44 @@ class HelpFrame(ctk.CTkScrollableFrame):
         photo = ImageTk.PhotoImage(image)
         self.image_label.configure(image=photo)
         self.image_label.image = photo
-
-    def get_chatbot_response(self):
+    '''
+    def fetch_response(self):
         user_input = self.user_input.get()
-        response = get_chatbot_response(user_input)
+        self.overview_text.configure(text="Loading, Please wait while I fetch the response...")
+        response = chatbot_response_controller(user_input)
         print(response)
-        self.overview_text.configure(text=response)
+        self.overview_text.configure(text=response)'
+    '''
+    '''
+    def get_chatbot_response(self):
+        threading.Thread(target=self.fetch_response, daemon=True).start()
+    '''
+    def fetch_response(self):
+        user_input = self.user_input.get()
+        self.overview_text.configure(text="Loading, Please wait while I fetch the response...")
+        def stream_chatbot_response():
+            try:
+                response_stream = chatbot_response_controller(user_input, stream=True)
+                response_text = ""
+                for chunk in response_stream:
+                    if "content" in chunk:
+                        response_text += chunk["content"]
+                        self.typing_effect(chunk["content"])
+                    else:
+                        self.overview_text.configure(text=chunk["error"])
+                        return
+            except Exception as e:
+                self.overview_text.configure(text="An error occurred while fetching the response. Please try again later.")
+                
+        threading.Thread(target=stream_chatbot_response, daemon=True).start()
+
+    def typing_effect(self, text):
+        current_text = self.overview_text.cget("text")
+        for char in text:
+            current_text += char
+            self.overview_text.configure(text=current_text)
+            self.overview_text.update_idletasks()
+            time.sleep(0.03)
 
     def clear_content_frame(self):
         for widget in self.content_frame.winfo_children():

@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox as ctkm
+from tkinter import colorchooser
 from Frames.utils import recreate_frames, logout
 '''
 This frame creates a settings environment that allows the user 
@@ -15,9 +16,9 @@ class SettingsFrame(ctk.CTkFrame):
         self.app = app  # Store the app instance4
 
         self.grid_columnconfigure(0, weight=1)  # Ensure widgets fill the width
-        self.grid_rowconfigure(0, weight=1)  # Weight for the top row
-        self.grid_rowconfigure(1, weight=1)  # Weight for the middle row
-        self.grid_rowconfigure(2, weight=1)  # Weight for the bottom row
+        self.grid_rowconfigure(0, weight=0)  # Weight for the top row
+        self.grid_rowconfigure(1, weight=0)  # Weight for the middle row
+        self.grid_rowconfigure(2, weight=0)  # Weight for the bottom row
 
         self.label = ctk.CTkLabel(self, text="Settings",font=("Arial", 24))
         self.label.grid(row=0, column=0, padx=10, pady=10, sticky="n")
@@ -31,8 +32,11 @@ class SettingsFrame(ctk.CTkFrame):
         self.themebutton = ctk.CTkButton(self, text="Change Theme", command=self.change_theme_popup)
         self.themebutton.grid(row=2, column=0, padx=10, pady=10, sticky="n")
 
+        self.colorbutton = ctk.CTkButton(self, text="Change Color", command=lambda: self.apply_color(colorchooser.askcolor()[1]))
+        self.colorbutton.grid(row=3, column=0, padx=10, pady=10, sticky="n")
+
         self.logoutbutton = ctk.CTkButton(self, text="Logout", command=lambda: logout(self.app))
-        self.logoutbutton.grid(row=3, column=0, padx=10, pady=10, sticky="n")
+        self.logoutbutton.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
     def darkmode(self):
         print("Dark Mode Toggled")
@@ -51,3 +55,13 @@ class SettingsFrame(ctk.CTkFrame):
     def change_theme_popup(self):
         msg = ctkm(title="Change Theme", message="Select theme", option_1="blue", option_2="green", option_3="dark-blue", icon="info")
         self.change_theme(msg.get())
+
+    def apply_color(self, color_code):
+        # Recursively apply the selected color to all CTkButton widgets
+        def apply_color_recursive(widget):
+            if isinstance(widget, ctk.CTkButton):
+                widget.configure(fg_color=color_code, hover_color=color_code, border_color=color_code)
+            for child in widget.winfo_children():
+                apply_color_recursive(child)
+
+        apply_color_recursive(self.app)

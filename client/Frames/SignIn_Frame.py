@@ -3,6 +3,11 @@ import pandas as pd
 
 from controller import check_user_exists, create_user, verify_user
 
+"""
+This class creates the sign in frame for the user to either login or create an
+account with Pynancial Pro.
+"""
+
 class SignInFrame(ctk.CTkFrame):
     def __init__(self, master, mainWindow):
         super().__init__(master)
