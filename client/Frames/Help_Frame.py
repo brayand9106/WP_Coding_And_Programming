@@ -32,8 +32,7 @@ class HelpFrame(ctk.CTkScrollableFrame):
 
         self.content_frame = ctk.CTkFrame(self)
         self.content_frame.grid(row=3, column=0, padx=10, pady=10, sticky="esw")
-        self.content_frame.grid_rowconfigure(0, weight=1)
-        self.content_frame.grid_rowconfigure(1, weight=1)
+        self.content_frame.columnconfigure(0, weight=1)
 
 
         self.overview_text = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 16), wraplength=400)
@@ -112,10 +111,25 @@ class HelpFrame(ctk.CTkScrollableFrame):
     def fetch_response(self):
         user_input = self.user_input.get()
         self.overview_text.configure(text="Loading, Please wait while I fetch the response...")
+        self.loading = True
+
+        def animate():
+            '''Animates the loading for fetching response text'''
+            dots = ["", ".", "..", "..."]
+            i = 0
+            while self.loading:
+                self.overview_text.configure(text=f"Loading, Please wait while I fetch the response{dots[i]}")
+                self.overview_text.update_idletasks()
+                time.sleep(0.5)
+
+                i = (i + 1) % len(dots)
+
         def chatbot_response():
+            '''Gets the chatbot response from the controller'''
             try:
                 # Get the full response from the chatbot
                 response = chatbot_response_controller(user_input)
+                self.loading = False
                 if isinstance(response, dict) and "error" in response:
                     self.overview_text.configure(text=response["error"])
                 else:
@@ -123,10 +137,13 @@ class HelpFrame(ctk.CTkScrollableFrame):
             except Exception as e:
                 self.overview_text.configure(text="An error occurred while fetching the response. Please try again later.")
                 
+        threading.Thread(target=animate, daemon=True).start()
+        # Start the chatbot response in a separate thread
         threading.Thread(target=chatbot_response, daemon=True).start()
 
+
     def typing_effect(self, text):
-        current_text = self.overview_text.cget("text")
+        current_text = ""
         for char in text:
             current_text += char
             self.overview_text.configure(text=current_text)
