@@ -100,17 +100,16 @@ def chatbot_response():
     )
     combined_input = detailed_summary + "\n\nUser Query: " + user_input
 
-    def generate():
-        try:
-            for chunk in chat(model="llama3.2", messages=[{'role': 'user', 'content': combined_input}], stream=True):
-                if 'message' in chunk and 'content' in chunk['message']:
-                    yield f"{json.dumps({'content': chunk['message']['content']})}\n"  # Ensure valid JSON
-        except ollama.ResponseError as e:
-            yield f"{json.dumps({'error': str(e)})}\n"
-        except Exception as e:
-            yield f"{json.dumps({'error': f'Unexpected error: {str(e)}'})}\n"
+    try:
+        # Use ollama to generate a response
+        response: ChatResponse = chat(model="llama3.2", messages=[{'role': 'user', 'content': combined_input}])
+        output_text = response.message.content
+        return jsonify({'response': output_text})
+    except ollama.ResponseError as e:
+        return jsonify({'error': str(e)}), e.status_code
+    except Exception as e:
+        return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
 
-    return app.response_class(generate(), content_type='application/json')
     '''
     try:
         # Use ollama to generate a response

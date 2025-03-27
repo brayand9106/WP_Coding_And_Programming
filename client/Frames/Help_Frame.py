@@ -112,21 +112,18 @@ class HelpFrame(ctk.CTkScrollableFrame):
     def fetch_response(self):
         user_input = self.user_input.get()
         self.overview_text.configure(text="Loading, Please wait while I fetch the response...")
-        def stream_chatbot_response():
+        def chatbot_response():
             try:
-                response_stream = chatbot_response_controller(user_input, stream=True)
-                response_text = ""
-                for chunk in response_stream:
-                    if "content" in chunk:
-                        response_text += chunk["content"]
-                        self.typing_effect(chunk["content"])
-                    else:
-                        self.overview_text.configure(text=chunk["error"])
-                        return
+                # Get the full response from the chatbot
+                response = chatbot_response_controller(user_input)
+                if isinstance(response, dict) and "error" in response:
+                    self.overview_text.configure(text=response["error"])
+                else:
+                    self.typing_effect(response)  # Use the typing effect for the full response
             except Exception as e:
                 self.overview_text.configure(text="An error occurred while fetching the response. Please try again later.")
                 
-        threading.Thread(target=stream_chatbot_response, daemon=True).start()
+        threading.Thread(target=chatbot_response, daemon=True).start()
 
     def typing_effect(self, text):
         current_text = self.overview_text.cget("text")
