@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import os
 from CTkMessagebox import CTkMessagebox as ctkm
 from Frames.utils import recreate_frames, logout
 '''
@@ -45,9 +46,16 @@ class SettingsFrame(ctk.CTkFrame):
 
     def change_theme(self, msg_option):
         print("Theme Changed")
-        ctk.set_default_color_theme(msg_option)
+        themeOption = str(msg_option).lower()
+        if themeOption == "red":
+            ctk.set_default_color_theme(os.path.join(os.getcwd(), "Themes", "red.json"))
+        elif themeOption == "blue":
+            ctk.set_default_color_theme("blue")
+        elif themeOption == "green":
+            ctk.set_default_color_theme("green")
         recreate_frames(self.app)
+        
 
     def change_theme_popup(self):
-        msg = ctkm(title="Change Theme", message="Select theme", option_1="blue", option_2="green", option_3="dark-blue", icon="info")
+        msg = ctkm(title="Change Theme", message="Select theme", option_1="Blue", option_2="Green", option_3= "Red", icon="info")
         self.change_theme(msg.get())
