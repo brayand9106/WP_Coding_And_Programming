@@ -17,6 +17,8 @@ from Frames.Home_Frame import HomeFrame
 from controller import load_transactions
 from Frames.CreateTransaction_Frame import Transaction
 
+'''This is the main file of execution for the entire program'''
+
 # Prepares logo for future use
 logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
 print(logo_image_path)
@@ -24,13 +26,14 @@ logo = ctk.CTkImage(Image.open(logo_image_path), size=(200, 100))
 
 icon_path = os.path.join(os.getcwd(), "Images", "PynancialProIcon.ico")
 
+"""This method lets the user go back to home screen"""
 def go_home(app):
     for widget in app.MainFrame.winfo_children():
         widget.destroy()
     home_frame = HomeFrame(app.MainFrame, app.user)
     home_frame.grid(sticky="nsew")
 
-# Opens main window
+"""Opens main window"""
 def mainWindow(app, user):
     # Initialize transactions attribute to use the transactions saved in excel
     transactions_data = load_transactions(user)
