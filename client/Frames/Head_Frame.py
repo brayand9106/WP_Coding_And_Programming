@@ -17,7 +17,7 @@ class HeadFrame(ctk.CTkFrame):
         self.grid_rowconfigure("all", weight=0)  # Equal weight for rows
 
         # Load the image
-        ctk_logo = ImageTk.PhotoImage(img)
+        ctk_logo = img
 
         # Create a nested frame
         nested_frame = ctk.CTkFrame(self, fg_color="transparent", bg_color="transparent")

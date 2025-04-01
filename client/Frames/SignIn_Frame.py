@@ -54,13 +54,14 @@ class SignInFrame(ctk.CTkFrame):
         self.createAccountButton = ctk.CTkButton(self.frame, text="Create Account", command=self.createAccountPressed, width=300)
         self.createAccountButton.grid(row=5, column=1, pady=(10, 40), padx=(8, 0), sticky="w")
 
-
+    """Toggles the password visibility on and off for the program"""
     def toggle_password_visibility(self):
         if self.show_password.get():
             self.passWordEntry.configure(show="")
         else:
             self.passWordEntry.configure(show="*")
 
+    """Verifies the user and logs them in if the username and password are correct"""
     def logInPressed(self):
         username = self.userNameEntry.get().strip()
         password = self.passWordEntry.get().strip()
@@ -80,6 +81,7 @@ class SignInFrame(ctk.CTkFrame):
                 self.error_label.configure(text="Too many failed login attempts, try again later", text_color="red", font=("Arial", 14))
                 self.logInButton.configure(state="disabled")
 
+    """Creates a new account if the username and password are valid"""
     def createAccountPressed(self):
         username = self.userNameEntry.get().strip()
         password = self.passWordEntry.get().strip()

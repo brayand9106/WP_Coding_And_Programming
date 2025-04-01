@@ -11,17 +11,22 @@ class Transaction:
         self.expenses = expenses
         self.date = date
 
+    """Returns the transaction ID"""
     def getTransactionID(self):
         return self.id
 
+    """Returns the transaction title"""
     def getTransactionText(self):
         return self.title
     
+    """Returns the transaction income"""
     def getIncome(self):
         return self.income
     
+    """Returns the transaction expenses"""
     def getExpenses(self):
         return self.expenses
     
+    """Returns the transaction date"""
     def getDate(self):
         return self.date

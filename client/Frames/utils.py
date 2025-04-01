@@ -5,6 +5,7 @@ This file contains utility functions which affect the entirety of the applicatio
 and its frames
 """
 
+"""Refreshes all frames by destroying all widgets and recreating them"""
 def recreate_frames(app):
     # Destroy existing frames if they exist
     for widget in app.winfo_children():
@@ -14,6 +15,7 @@ def recreate_frames(app):
     from main import mainWindow
     mainWindow(app, app.user)
 
+"""This method destroys the frames and redirects to the login screen"""    
 def logout(app):
     # Clear user-specific data
     app.user = None

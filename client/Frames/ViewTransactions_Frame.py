@@ -40,6 +40,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
         self.create_table_headers()
         self.load_transactions()
 
+    """Creates the table headers for the transactions list"""
     def create_table_headers(self):
         headers = ["ID", "Report", "Income", "Expenses", "Date"]
         for col, header in enumerate(headers):
@@ -47,6 +48,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             label.grid(row=0, column=col, padx=5, pady=5, sticky="ew")
             self.scrollable_frame.grid_columnconfigure(col, weight=1)
 
+    """This method changes which transactions are selected based off user checkbox selection"""
     def selectTransactions(self, transaction_id, state):
         if state.get():
             self.selectedTransactions.append(transaction_id)
@@ -55,6 +57,8 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             self.selectedTransactions.remove(transaction_id)
             print(self.selectedTransactions)
 
+    """This method loads the transactions from the database 
+    and displays them in the scrollable frame"""
     def load_transactions(self, transactions=None):
         if transactions is None:
             transactions = self.app.transactions
@@ -90,6 +94,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
 
         self.scrollable_frame._parent_canvas.yview_moveto(0)  # Moves the scrollbar back to the top  # Scroll to the top
 
+    """This method filters the transactions based on the selected button"""
     def filter_transactions(self, button_name):
         if button_name == "ID":
             print("Filter by ID")
@@ -111,6 +116,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
 
         self.load_transactions(sorted_transactions)
 
+    """This method filters the transactions based on the search term"""
     def real_time_search(self, event):
         term = self.filter_entry.get().lower()
         print(f"Real-time search: {term}")
@@ -120,6 +126,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             filtered_transactions = [transaction for transaction in self.app.transactions if term in transaction.title.lower()]
             self.load_transactions(filtered_transactions)
 
+    """This method updates the selected transaction(s)"""
     def update_transaction(self):
         selected_index = self.scrollable_frame.curselection()
         if selected_index:
@@ -127,6 +134,7 @@ class ViewTransactionsFrame(ctk.CTkFrame):
             # Implement the update functionality here
             print(f"Update transaction with ID: {transaction_id}")
 
+    """This method deletes the selected transaction(s)"""
     def delete_transaction(self):
         deleted_transaction_ids = []
         for transaction in self.app.transactions:

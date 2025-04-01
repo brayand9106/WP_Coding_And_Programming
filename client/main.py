@@ -20,7 +20,7 @@ from Frames.CreateTransaction_Frame import Transaction
 # Prepares logo for future use
 logo_image_path = os.path.join(os.getcwd(), "Images", "LogoPynancial2.png")
 print(logo_image_path)
-logo = Image.open(logo_image_path).resize((200, 100))
+logo = ctk.CTkImage(Image.open(logo_image_path), size=(200, 100))
 
 icon_path = os.path.join(os.getcwd(), "Images", "PynancialProIcon.ico")
 
@@ -40,7 +40,6 @@ def mainWindow(app, user):
         print("No transactions found for user.")
         app.transactions = []
 
-    print(app.transactions)
     app.num_transactions = len(app.transactions)
     
     app.grid_columnconfigure(1, weight=0)

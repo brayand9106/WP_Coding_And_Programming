@@ -55,7 +55,8 @@ class HomeFrame(ctk.CTkFrame):
 
         self.news = ctk.CTkLabel(self.news_frame, text=f"News: \n {self.news_info} ", font=("Arial", 24), anchor="w", wraplength=300)
         self.news.grid(row=0, column=0, padx=10, pady=10)
-        
+    
+    """Generates a weekly report of cumulative earnings to the user at home"""
     def generate_weekly_report(self):
         end_date = datetime.now()
         start_date = end_date - timedelta(weeks=1)
@@ -64,6 +65,8 @@ class HomeFrame(ctk.CTkFrame):
             transaction for transaction in self.app.transactions
             if start_date <= datetime.strptime(transaction.date, "%m/%d/%Y") <= end_date
         ]
+
+        filtered_transactions.sort(key=lambda t: datetime.strptime(t.getDate(), "%m/%d/%Y"))
 
         # Clear previous content in the weekly_report_frame
         for widget in self.weekly_report_frame.winfo_children():
@@ -83,14 +86,21 @@ class HomeFrame(ctk.CTkFrame):
             "Date": datetime.strptime(t.getDate(), "%m/%d/%Y")
         } for t in filtered_transactions])
 
+         # Group by date and keep the row with the highest cumulative earnings
+        df = df.groupby("Date", as_index=False).max()
+
         fig, ax = plt.subplots(figsize=(10, 6))
-        sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings", errorbar=None)
+        sns.lineplot(data=df, x="Date", y="Cumulative Earnings", ax=ax, label="Cumulative Earnings", marker="o", errorbar=None)
         ax.set_title("Cumulative Earnings Over the Past Week")
 
         ax.xaxis.set_major_formatter(DateFormatter("%m-%d %A"))
         ax.xaxis.set_major_locator(AutoDateLocator())
-        ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
-        fig.tight_layout(pad=3.0)
+
+        for label in ax.get_xticklabels():
+            label.set_rotation(45)
+            label.set_horizontalalignment("right")
+
+        fig.tight_layout(pad=5)
 
         canvas = FigureCanvasTkAgg(fig, master=self.weekly_report_frame)
         canvas.draw()

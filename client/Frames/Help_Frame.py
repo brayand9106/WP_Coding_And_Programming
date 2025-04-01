@@ -34,7 +34,6 @@ class HelpFrame(ctk.CTkScrollableFrame):
         self.content_frame.grid(row=3, column=0, padx=10, pady=10, sticky="esw")
         self.content_frame.columnconfigure(0, weight=1)
 
-
         self.overview_text = ctk.CTkLabel(self.content_frame, text="", font=("Arial", 16), wraplength=400)
         self.overview_text.grid(row=0, column=0, padx=10, pady=10, sticky="new")
 
@@ -96,18 +95,7 @@ class HelpFrame(ctk.CTkScrollableFrame):
         photo = ImageTk.PhotoImage(image)
         self.image_label.configure(image=photo)
         self.image_label.image = photo
-    '''
-    def fetch_response(self):
-        user_input = self.user_input.get()
-        self.overview_text.configure(text="Loading, Please wait while I fetch the response...")
-        response = chatbot_response_controller(user_input)
-        print(response)
-        self.overview_text.configure(text=response)'
-    '''
-    '''
-    def get_chatbot_response(self):
-        threading.Thread(target=self.fetch_response, daemon=True).start()
-    '''
+
     def fetch_response(self):
         user_input = self.user_input.get()
         self.overview_text.configure(text="Loading, Please wait while I fetch the response...")
@@ -136,7 +124,7 @@ class HelpFrame(ctk.CTkScrollableFrame):
                     self.typing_effect(response)  # Use the typing effect for the full response
             except Exception as e:
                 self.overview_text.configure(text="An error occurred while fetching the response. Please try again later.")
-                
+        # Start the loading animation in a separate thread
         threading.Thread(target=animate, daemon=True).start()
         # Start the chatbot response in a separate thread
         threading.Thread(target=chatbot_response, daemon=True).start()

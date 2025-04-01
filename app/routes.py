@@ -3,6 +3,9 @@ import json
 from app import app, db
 from app.models import Users, Transactions
 
+'''This file contains the routes for the Flask application, 
+handling user and transaction management.'''
+
 try:
     import ollama
     hasollama=True
@@ -13,6 +16,7 @@ except ImportError:
 if hasollama:
     from ollama import chat, ChatResponse
 
+"""This route handles the creation of a new user."""
 @app.route('/api/users', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -21,6 +25,7 @@ def create_user():
     db.session.commit()
     return jsonify({'message': 'User created successfully'}), 201
 
+"""This route handles the verification of user existence"""
 @app.route('/api/users/<username>', methods=['GET'])
 def check_user(username):
     user = Users.query.filter_by(username=username).first()
@@ -29,6 +34,7 @@ def check_user(username):
     else:
         return jsonify({'message': 'User does not exist'}), 404
     
+"""This route handles the verification of user credentials"""
 @app.route('/api/users/verify', methods=['POST'])
 def verify_user():
     data = request.get_json()
@@ -38,6 +44,7 @@ def verify_user():
     else:
         return jsonify({'message': 'Invalid username or password'}), 401
     
+"""This route handles the creation of a new transaction to database."""
 @app.route('/api/transactions', methods=['POST'])
 def create_transaction():
     data = request.get_json()
@@ -52,6 +59,7 @@ def create_transaction():
     db.session.commit()
     return jsonify({'message': 'Transaction created successfully', 'transaction_id': new_transaction.id}), 201
 
+"""This route handles the deletion of transactions from database from user."""
 @app.route('/api/transactions/<int:transaction_id>', methods=['DELETE'])
 def delete_transaction(transaction_id):
     transaction = Transactions.query.get(transaction_id)
@@ -62,6 +70,7 @@ def delete_transaction(transaction_id):
     else:
         return jsonify({'message': 'Transaction not found'}), 404
 
+"""This route handles the requests to get user id"""
 @app.route('/api/users/id/<username>', methods=['GET'])
 def get_user_id(username):
     user = Users.query.filter_by(username=username).first()
@@ -70,6 +79,7 @@ def get_user_id(username):
     else:
         return jsonify({'message': 'User not found'}), 404
 
+"""This route handles the requests to get all transactions for a user"""
 @app.route('/api/transactions/<int:user_id>', methods=['GET'])
 def get_transactions(user_id):
     transactions = Transactions.query.filter_by(user_id=user_id).all()
@@ -81,6 +91,7 @@ def get_transactions(user_id):
         'date': t.date if isinstance(t.date, str) else t.date.strftime("%m/%d/%Y")  # Ensure date is formatted as a string
     } for t in transactions])
 
+"""This route handles the requests for chatbot responses by client"""
 @app.route('/api/chatbot', methods=['POST'])
 def chatbot_response():
     if not hasollama:
@@ -109,14 +120,3 @@ def chatbot_response():
         return jsonify({'error': str(e)}), e.status_code
     except Exception as e:
         return jsonify({'error': f'Unexpected error: {str(e)}'}), 500
-
-    '''
-    try:
-        # Use ollama to generate a response
-        response: ChatResponse = chat(model="llama3.2", messages=[{'role': 'user', 'content': combined_input}])
-        output_text = response.message.content
-        
-        return jsonify({'response': output_text})
-    except ollama.ResponseError as e:
-        return jsonify({'error': str(e)}), e.status_code
-    '''

@@ -29,10 +29,9 @@ class SideBarFrame(ctk.CTkFrame):
         for i, nav in enumerate(navs):
             self.button = ctk.CTkButton(self, text=str(nav), command=lambda name=nav: self.onClick(name, master))
             self.navList.append(self.button)
-            print(str(self.button))
             self.button.grid(row=i, pady=30, padx=10, sticky="ew")
 
-
+    """This method binds sidebar buttons to the functions that are called when clicked"""
     def onClick(self, button_name, master):
         print(f"{button_name} clicked on")
         if button_name == "Create Transaction":
@@ -47,37 +46,42 @@ class SideBarFrame(ctk.CTkFrame):
             self.show_settings(master) #Shows the Settings environment
         
 
-
+    """This method displays the help window from sidebar button destroys previous"""
     def show_help(self, master):
         for widget in master.MainFrame.winfo_children():
             widget.destroy()
         help_frame = HelpFrame(master.MainFrame)
         help_frame.grid(sticky="nwse")
 
+    """This method displays the create transaction window from sidebar button destroys previous"""
     def show_create_transaction(self, master): #Creates the transaction from mainwindow
         for widget in master.MainFrame.winfo_children():
             widget.destroy() #Destroys any previous widget on mainframe
         create_transaction_frame = CreateTransactionFrame(master, master.MainFrame)
         create_transaction_frame.grid(sticky="nwse")
 
+    """This method displays the view transactions window from sidebar button destroys previous"""
     def show_view_transactions(self, master):
         for widget in master.MainFrame.winfo_children():
             widget.destroy()
         view_transactions_frame = ViewTransactionsFrame(master, master.MainFrame)
         view_transactions_frame.grid(sticky="nwse")
 
+    """This method displays the settings window from sidebar button destroys previous"""
     def show_settings(self, master):
         for widget in master.MainFrame.winfo_children():
             widget.destroy()
         settings_frame = SettingsFrame(master, master.MainFrame)
         settings_frame.grid(sticky="nwse")
 
+    """This method displays the statistics window from sidebar button destroys previous"""
     def show_statistics(self, master):
         for widget in master.MainFrame.winfo_children():
             widget.destroy()
         statistics_frame = StatisticsFrame(master, master.MainFrame)
         statistics_frame.grid(sticky="nwse")
 
+    """This method is used to toggle the visibility of the sidebar"""
     def toggle_visibility(self):
         if self.winfo_ismapped():  # Check if the frame is visible
             self.grid_remove()  # Hide the frame

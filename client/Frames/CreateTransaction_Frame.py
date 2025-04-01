@@ -41,6 +41,7 @@ class CreateTransactionFrame(ctk.CTkFrame):
         self.submit_button = ctk.CTkButton(self, text="Submit", command=lambda: self.submit_transaction())
         self.submit_button.grid(row=8, column=0, padx=10, pady=10)
 
+    """This method creates a popup window that asks the user to confirm the transaction"""
     def confirmPopup(self, title, income, expenses, date):
         # Creates the popup with the transaction details and 2 buttons
         msg = ctkm(title="Confirm Transaction?", 
@@ -58,6 +59,7 @@ class CreateTransactionFrame(ctk.CTkFrame):
             print("Transaction cancelled")
             return False    
 
+    """This method submits the transaction to the server and adds it to the list of transactions"""
     def submit_transaction(self):
         title = self.entry.get()
         income = self.income_entry.get()
@@ -83,9 +85,11 @@ class CreateTransactionFrame(ctk.CTkFrame):
                 # Adds transaction to the list
                 new_transaction = Transaction(transaction_id, title, float(income), float(expenses), date)
                 self.app.transactions.append(new_transaction)
-                print(self.app.transactions)
                 print(f"Transaction submitted: {title}, Income: {income}, Expenses: {expenses}, Date: {date}")
+                ctkm(title="Transaction Submitted", message="Transaction has been submitted successfully.", icon="check")
             else:
                 print("Failed to retrieve transaction ID from response.")
+                ctkm(title="Transaction Failed", message="Failed to retrieve transaction ID from response.", icon="cancel")
         else:
             print(f"Failed to save transaction. Status code: {response.status_code if response else 'No response'}")
+            ctkm(title="Transaction Failed", message=f"Failed to save transaction. Please try again.\n Status code: {response.status_code}", icon="cancel")

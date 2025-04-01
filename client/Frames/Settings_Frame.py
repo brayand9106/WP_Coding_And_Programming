@@ -39,6 +39,7 @@ class SettingsFrame(ctk.CTkFrame):
         self.logoutbutton = ctk.CTkButton(self, text="Logout", command=lambda: logout(self.app))
         self.logoutbutton.grid(row=0, column=1, padx=10, pady=10, sticky="ne")
 
+    """"Toggles darkmode on and off for the program"""
     def darkmode(self):
         print("Dark Mode Toggled")
         if self.darkmode_var.get():
@@ -48,6 +49,7 @@ class SettingsFrame(ctk.CTkFrame):
             ctk.set_appearance_mode("Light")
             self.app.dark_mode = False
 
+    """Changes the theme of the program to the selected theme"""
     def change_theme(self, msg_option):
         print("Theme Changed")
         themeOption = str(msg_option).lower()
@@ -59,11 +61,12 @@ class SettingsFrame(ctk.CTkFrame):
             ctk.set_default_color_theme("green")
         recreate_frames(self.app)
         
-
+    """Opens a popup to select the theme"""
     def change_theme_popup(self):
         msg = ctkm(title="Change Theme", message="Select theme", option_1="Blue", option_2="Green", option_3= "Red", icon="info")
         self.change_theme(msg.get())
 
+    """Applies the selected color to all CTkButton widgets in the app"""
     def apply_color(self, color_code):
         # Recursively apply the selected color to all CTkButton widgets
         def apply_color_recursive(widget):

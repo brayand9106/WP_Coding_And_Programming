@@ -101,6 +101,7 @@ class StatisticsFrame(ctk.CTkFrame):
             sns.lineplot(data=df, x="Date", y="Income", ax=ax, label="Income", marker="o", errorbar=None)
             sns.lineplot(data=df, x="Date", y="Expenses", ax=ax, label="Expenses", marker="o", errorbar=None)
             ax.set_title("Income and Expenses Over Time")
+
         elif graph_type == "Net Earnings":
             df = pd.DataFrame([{
                 "Transaction": t.getTransactionText(),
@@ -111,6 +112,7 @@ class StatisticsFrame(ctk.CTkFrame):
             fig, ax = plt.subplots(figsize=(10, 6))
             sns.lineplot(data=df, x="Date", y="Net Earnings", ax=ax, label="Net Earnings", marker="o", errorbar=None)
             ax.set_title("Net Earnings Over Time")
+
         elif graph_type == "Cumulative Earnings":
             # Sort transactions by date
             filtered_transactions.sort(key=lambda t: datetime.strptime(t.getDate(), "%m/%d/%Y"))
@@ -133,7 +135,12 @@ class StatisticsFrame(ctk.CTkFrame):
             ax.xaxis.set_major_formatter(DateFormatter("%m-%d %A"))
 
         ax.xaxis.set_major_locator(AutoDateLocator())
-        ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+
+        # Rotate and align x-axis labels
+        for label in ax.get_xticklabels():
+            label.set_rotation(45)
+            label.set_horizontalalignment("right")
+            
         fig.tight_layout(pad=3.0)
 
         if self.canvas:
