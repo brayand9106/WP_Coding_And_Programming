@@ -7,7 +7,7 @@ FBLA West Point High School IT 2024-2025 Coding and Programming Repository
 
 ## 📸 Screenshots
 
-[Screenshot](https://github.com/brayand9106/WP_Coding_And_Programming/blob/main/client/Images/LogoPynancial2.png?raw=true)
+![Screenshot](https://github.com/brayand9106/WP_Coding_And_Programming/blob/main/client/Images/LogoPynancial2.png?raw=true)
 
 ## 🧰 Features (Not limited to:)
 
